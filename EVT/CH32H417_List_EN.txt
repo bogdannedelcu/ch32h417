@@ -1,5 +1,5 @@
 
-Nanjing Qinheng Microelectronics Co., Ltd. 2025.10
+Nanjing Qinheng Microelectronics Co., Ltd. 2026.01
 
 https://wch-ic.com
 
@@ -48,6 +48,7 @@ Directory
   |      |      |      |      |      |-- HSEM_CoreSync：core synchronization routine
   |      |      |      |      |      |-- HSEM_ResourceSharing：HSEM ResourceSharing routine
   |      |      |      |      |      |-- HSEM_DataSharing：HSEM global variable Sharing routine
+  |      |      |      |      |-- ICache：ICache routine
   |      |      |      |      |-- IPC：IPC routine
   |      |      |      |      |-- PFIC
   |      |      |      |      |      |-- Interrupt_Nest：interrupt nested routine
@@ -80,13 +81,18 @@ Directory
   |      |      |      |      |-- DMA_MEM2MEM: memory to memory mode routine
   |      |      |      |      |-- DMA_MEM2PERIP: see each peripheral subroutine for memory to peripheral mode and peripheral to memory mode routine
   |      |      |      |      |-- DoubleBuffer_DMA：Double Buffer mode routine
+  |      |      |      |      |-- TIM_DMA_SLEEP_MODE: DMA routine in sleep mode
   |      |      |      |-- DVP 
   |      |      |      |      |-- DVP_TFTLCD: DVP routine to operate OV2640 and OV5640 camera video mode to display image on LCD
   |      |      |      |      |-- DVP_UART: DVP routine to operate OV2640 camera JPEG mode
   |      |      |      |-- ETH
   |      |      |      |      |-- DHCP: DHCP demonstration routine to obtain IP automatically
   |      |      |      |      |-- DNS: DHCP demonstration routine to obtain IP automatically and then request domain name resolution 
-  |      |      |      |      |-- IoCHub：IoCHub basic routines, using AT commands to implement IoCHub's basic function demonstration on MCU
+  |      |      |      |      |-- IoCHub：
+  |      |      |      |      |      |-- IoCHub_Demo: IoCHub basic routines, using AT commands to implement IoCHub's basic function demonstration on MCU
+  |      |      |      |      |      |-- IoCHub_UART: IoCHub UART routine, demonstrating data transparent transmission between IoCHub and UART
+  |      |      |      |      |      |-- Lib: IoCHub library
+  |      |      |      |      |      |-- readme.txt
   |      |      |      |      |-- IPRaw_PING: IP_RAW routine, to demonstrate that the TCP client receives data after connecting to the server and then sends it back
   |      |      |      |      |-- MAC_RAW：Demo of ETH MAC layer data transmission and reception
   |      |      |      |      |-- MQTT: MQTT routine, to demonstrate MQTT protocol communication based on TCP/IP   
@@ -193,8 +199,11 @@ Directory
   |      |      |      |      |-- Tool_Manual
   |      |      |      |      |      |-- Manual
   |      |      |      |      |      |      |-- CHRISC8B.PDF: RISC8B Core Microcontroller Instruction Set
+  |      |      |      |      |      |      |-- CHRISC8B-EN.PDF: RISC8B Core Microcontroller Instruction Set
   |      |      |      |      |      |      |-- PIOC.PDF: Programmable Protocol I/O Microcontroller PIOC Handbook
+  |      |      |      |      |      |      |-- PIOC.PDF-EN: Programmable Protocol I/O Microcontroller PIOC Handbook
   |      |      |      |      |      |      |-- PIOC User Manual.PDF: PIOC User Manual
+  |      |      |      |      |      |      |-- PIOC User Manual-EN.pdf：PIOC User Manual
   |      |      |      |      |      |-- Tool
   |      |      |      |      |      |      |-- BIN_HEX.EXE: BIN to HEX file conversion tool
   |      |      |      |      |      |      |-- WASM53B.EXE: RISC8B microcontroller assembly tool for compiling assembly source programs into instruction code target data

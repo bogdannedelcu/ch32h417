@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : startup_ch32h417_v5f.s
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/10/21
+* Version            : V1.0.3
+* Date               : 2025/11/20
 * Description        : CH32h417_416_415 V5F StartUp File.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -484,7 +484,7 @@ handle_reset:
 	bltu a0, a1, 1b
 2:
 /* Configure Prefetch */
-    li t0, 0x123733E0
+    li t0, 0x1237B3E0
     csrw 0xBC0, t0
 /* Configure nesting level */
 	li t0, 0x07

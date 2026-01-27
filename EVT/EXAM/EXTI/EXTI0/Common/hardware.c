@@ -12,6 +12,8 @@
 #include "hardware.h"
 
 
+#if Func_Run_V3F 
+
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      EXTI0_IRQHandler
@@ -31,6 +33,8 @@ void EXTI7_0_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line0);     /* Clear Flag */
   }
 }
+
+#endif 
 
 /*********************************************************************
  * @fn      EXTI0_INT_INIT

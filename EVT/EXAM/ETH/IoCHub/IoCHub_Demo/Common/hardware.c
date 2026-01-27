@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/01/15
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -17,24 +17,6 @@
 #include "app_net.h"
 
 
-extern volatile uint8_t speedflg;
-extern volatile uint32_t speed;
-extern volatile uint32_t recvcnt;
-
-/*********************************************************************
- * @fn      mStopIfError
- *
- * @brief   check if error.
- *
- * @return  none
- */
-void mStopIfError (u8 iError)
-{
-    if (iError == WCHNET_ERR_SUCCESS)
-        return;
-    printf ("Error: %02X\r\n", (u16) iError); /*œ‘ æ¥ÌŒÛ */
-}
-
 /*********************************************************************
  * @fn      TIM2_Init
  *
@@ -48,7 +30,7 @@ void TIM2_Init(void)
 
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_TIM2, ENABLE );
 
-    TIM_TimeBaseStructure.TIM_Period = SystemCoreClock / 1000000;
+    TIM_TimeBaseStructure.TIM_Period = HCLKClock / 1000000;
     TIM_TimeBaseStructure.TIM_Prescaler = WCHNETTIMERPERIOD * 100 - 1;
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -75,6 +57,7 @@ void AT_Init (void) {
 
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO | RCC_HB2Periph_USART1 | RCC_HB2Periph_GPIOA, ENABLE);
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF7);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF7);
 
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;

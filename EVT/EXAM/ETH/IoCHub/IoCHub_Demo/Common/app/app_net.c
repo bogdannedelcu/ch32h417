@@ -13,7 +13,7 @@
 #define KEEPLIVE_ENABLE
 #define TCP_SINGLE_CLIENT
 
-u8 MACAddr[6] = {0x80, 0xb6, 0x55, 0x01, 0x02, 0x03};
+u8 MACAddr[6]; 
 u8 IPAddr[4] = { 192, 168, 1, 10 };
 u8 GWIPAddr[4] = { 192, 168, 1, 1 };
 u8 IPMask[4] = { 255, 255, 255, 0 };
@@ -24,7 +24,19 @@ u8 socket[WCHNET_MAX_SOCKET_NUM];
 u8 SocketRecvBuf[WCHNET_MAX_SOCKET_NUM][RECE_BUF_LEN];
 u8 MyBuf[RECE_BUF_LEN];
 
-extern void mStopIfError (u8 iError);
+/*********************************************************************
+ * @fn      mStopIfError
+ *
+ * @brief   check if error.
+ *
+ * @return  none
+ */
+void mStopIfError (u8 iError)
+{
+    if (iError == WCHNET_ERR_SUCCESS)
+        return;
+    printf ("Error: %02X\r\n", (u16) iError); /*print error*/
+}
 /*******************************************************************************
  * Function Name  : appCallBack
  * Description    : UDP Recv
@@ -114,7 +126,6 @@ void WCHNET_HandleSockInt (u8 socketid, u8 initstat)
         	SocketIdForSer = socketid;
             socketIsSucc |= 0x01;
         }
-
         printf ("socketIsSucc: %d\r\n", socketIsSucc);
     }
 

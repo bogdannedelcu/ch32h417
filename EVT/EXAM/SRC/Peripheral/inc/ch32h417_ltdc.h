@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_ltdc.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/11/13
 * Description        : This file contains all the functions prototypes for the
 *                      LTDC firmware library.
 *********************************************************************************
@@ -228,7 +228,6 @@ void LTDC_DeInit(void);
 void LTDC_Init(LTDC_InitTypeDef* LTDC_InitStruct);
 void LTDC_StructInit(LTDC_InitTypeDef* LTDC_InitStruct);
 void LTDC_Cmd(FunctionalState NewState);
-void LTDC_DitherCmd(FunctionalState NewState);
 LTDC_RGBTypeDef LTDC_GetRGBWidth(void);
 void LTDC_RGBStructInit(LTDC_RGBTypeDef* LTDC_RGB_InitStruct);
 void LTDC_LIPConfig(uint32_t LTDC_LIPositionConfig);

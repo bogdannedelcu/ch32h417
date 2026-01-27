@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/10/24
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -57,6 +57,9 @@ void USART1_IT_CFG(void)
     NVIC_EnableIRQ(USART1_IRQn);
     USART_Cmd(USART1, ENABLE);
 }
+
+#if Func_Run_V3F
+
 void USART1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      USART3_IRQHandler
@@ -72,6 +75,8 @@ void USART1_IRQHandler(void)
         UART_Rx_Deal();
     }
 }
+
+#endif
 /*********************************************************************
  * @fn      Hardware
  *

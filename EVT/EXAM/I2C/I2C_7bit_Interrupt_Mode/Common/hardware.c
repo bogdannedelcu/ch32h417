@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -167,6 +167,8 @@ void Hardware(void)
         ;
 }
 
+#if Func_Run_V3F
+
 /*********************************************************************
  * @fn      I2C2_EV_IRQHandler
  *
@@ -284,6 +286,7 @@ void I2C2_EV_IRQHandler(void)
         ((void)I2C_ReadRegister(I2C2, I2C_Register_STAR1));
         ((void)I2C_ReceiveData(I2C2));
     }
+    
 
 #endif
     else
@@ -292,6 +295,10 @@ void I2C2_EV_IRQHandler(void)
         printf("sr1 %x \nsr2 %x \n", I2C2->STAR1, I2C2->STAR2);
     }
 }
+
+#endif
+
+#if Func_Run_V3F
 
 /*********************************************************************
  * @fn      I2C2_ER_IRQHandler
@@ -317,3 +324,5 @@ void I2C2_ER_IRQHandler(void)
     }
 #endif
 }
+
+#endif

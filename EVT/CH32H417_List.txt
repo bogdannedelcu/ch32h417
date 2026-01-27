@@ -1,5 +1,5 @@
 
-南京沁恒微电子股份有限公司 2025.10
+南京沁恒微电子股份有限公司 2026.01
 最新资料请到我们的网站上查询
 https://wch.cn
 
@@ -48,6 +48,7 @@ https://wch.cn
   |      |      |      |      |      |-- HSEM_CoreSync：内核同步例程。
   |      |      |      |      |      |-- HSEM_ResourceSharing：内核通过信号量共享信息例程。
   |      |      |      |      |      |-- HSEM_DataSharing：内核通过信号量共享全局变量例程。
+  |      |      |      |      |-- ICache：ICache例程
   |      |      |      |      |-- IPC：IPC例程
   |      |      |      |      |-- PFIC
   |      |      |      |      |      |-- Interrupt_Nest：中断嵌套例程
@@ -80,13 +81,18 @@ https://wch.cn
   |      |      |      |      |-- DMA_MEM2MEM：储存器到储存器模式例程
   |      |      |      |      |-- DMA_MEM2PERIP：储存器到外设模式、外设到储存器模式例程见各外设子例程
   |      |      |      |      |-- DoubleBuffer_DMA：DMA双缓冲模式例程
+  |      |      |      |      |-- TIM_DMA_SLEEP_MODE：在sleep模式下的DMA例程
   |      |      |      |-- DVP 
   |      |      |      |      |-- DVP_TFTLCD：DVP操作OV2640/OV5640摄像头视频模式在LCD显示图像例程
   |      |      |      |      |-- DVP_UART：DVP操作OV2640摄像头JPEG模式例程
   |      |      |      |-- ETH
   |      |      |      |      |-- DHCP：演示DHCP自动获取IP，并建立TCP连接进行数据回传
   |      |      |      |      |-- DNS：DHCP自动获取ip后，再请求域名解析演示例程
-  |      |      |      |      |-- IoCHub：IoCHub_Demo基础例程，通过AT指令实现IoCHub在MCU上的基础功能演示
+  |      |      |      |      |-- IoCHub：
+  |      |      |      |      |      |-- IoCHub_Demo：IoCHub基础例程，通过AT指令实现IoCHub在MCU上的基础功能演示
+  |      |      |      |      |      |-- IoCHub_UART：IoCHub UART例程，演示IoCHub与UART的数据透传
+  |      |      |      |      |      |-- Lib：IoCHub库
+  |      |      |      |      |      |-- readme.txt
   |      |      |      |      |-- IPRaw_PING：演示PING功能
   |      |      |      |      |-- MAC_RAW：演示以太网MAC层收发数据
   |      |      |      |      |-- MQTT：演示基于TCP/IP的MQTT协议通讯
@@ -193,8 +199,11 @@ https://wch.cn
   |      |      |      |      |-- Tool_Manual：工具和手册
   |      |      |      |      |      |-- Manual
   |      |      |      |      |      |      |-- CHRISC8B.PDF：RISC8B 内核单片机指令集
+  |      |      |      |      |      |      |-- CHRISC8B-EN.PDF：RISC8B 内核单片机指令集
   |      |      |      |      |      |      |-- PIOC.PDF：可编程协议I/O 微控制器PIOC手册
+  |      |      |      |      |      |      |-- PIOC-EN.PDF：可编程协议I/O 微控制器PIOC手册
   |      |      |      |      |      |      |-- PIOC使用说明.pdf：PIOC使用说明
+  |      |      |      |      |      |      |-- PIOC User Manual-EN.pdf：PIOC使用说明
   |      |      |      |      |      |-- Tool
   |      |      |      |      |      |      |-- BIN_HEX.EXE：BIN文件转HEX文件工具
   |      |      |      |      |      |      |-- WASM53B.EXE：RISC8B单片机的汇编工具，用于将汇编源程序编译为指令码目标数据

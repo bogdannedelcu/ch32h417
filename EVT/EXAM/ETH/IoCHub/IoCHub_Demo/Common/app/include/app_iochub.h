@@ -4,13 +4,6 @@
 #include "wchiochub.h"
 #include "iochub_config.h"
 
-#ifdef CH32V30X
-#include "ch32v30x.h"
-#endif
-#ifdef CH32V20X
-#include "ch32v20x.h"
-#endif
-
 #define USART_REC_LEN 128
 
 

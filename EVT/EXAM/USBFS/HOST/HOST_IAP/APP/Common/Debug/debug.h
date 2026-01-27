@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : debug.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file contains all the functions prototypes for UART
 *                      Printf , Delay functions.
 *********************************************************************************
@@ -56,6 +56,17 @@
 
 #ifndef Core_V5F_StartAddr
 #define Core_V5F_StartAddr   0x0001C000
+#endif
+
+#if ((Run_Core == Run_Core_V3FandV5F) || (Run_Core == Run_Core_V5F)) && defined(Core_V5F) 
+#define Func_Run_V5F 1
+#define Func_Run_V3F 0
+#elif ((Run_Core == Run_Core_V3FandV5F) || (Run_Core == Run_Core_V3F)) && defined(Core_V3F)
+#define Func_Run_V5F 0
+#define Func_Run_V3F 1
+#else
+#define Func_Run_V5F 0
+#define Func_Run_V3F 0
 #endif
 
 extern volatile uint32_t WFE_WkupSource;

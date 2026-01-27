@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : startup_ch32h417_v3f.s
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/10/21
+* Version            : V1.0.3
+* Date               : 2025/11/20
 * Description        : CH32h417_416_415 V3F StartUp File.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -527,7 +527,7 @@ handle_reset:
 	li t0, 0x01
 	csrw 0xBC1, t0
 /* Enable interrupt nesting and hardware stack */
-    li t0, 0x0B
+    li t0, 0x07
     csrw 0x804, t0
 /* Enable floating point and global interrupt, configure privileged mode */
    	li t0, 0x6088           

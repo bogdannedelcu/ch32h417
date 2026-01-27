@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_ltdc.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/07/16
+* Version            : V1.0.2
+* Date               : 2025/11/13
 * Description        : This file provides all the LTDC firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -125,27 +125,6 @@ void LTDC_Cmd(FunctionalState NewState)
     else
     {
         LTDC->GCR &= ~(uint32_t)LTDC_GCR_LTDCEN;
-    }
-}
-
-/*********************************************************************
- * @fn      LTDC_DitherCmd
- *
- * @brief   Enables or disables Dither.
- * 
- * @param   NewState - ENABLE or DISABLE.
- * 
- * @return  none
- */
-void LTDC_DitherCmd(FunctionalState NewState)
-{
-    if (NewState != DISABLE)
-    {
-        LTDC->GCR |= (uint32_t)LTDC_GCR_DEN;
-    }
-    else
-    {
-        LTDC->GCR &= ~(uint32_t)LTDC_GCR_DEN;
     }
 }
 

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : hardware.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/10/21
+ * Version            : V1.0.2
+ * Date               : 2025/12/05
  * Description        : This file provides all the CRC firmware functions.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -283,12 +283,16 @@ void Hardware(void)
     }
 }
 
+#if Func_Run_V3F
+
 void TIM1_UP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void TIM1_UP_IRQHandler(void)
 {
     vTick++;
     TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 }
+
+#endif
 
 uint32_t cnt = 0, errcnt = 0;
 void SERDES_IRQHandler() __attribute__((interrupt("WCH-Interrupt-fast")));

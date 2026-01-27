@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -19,6 +19,8 @@
 /* Mode Selection */
 #define MODE MODE1
 //#define MODE MODE2
+
+#if Func_Run_V3F
 
 /*********************************************************************
  * @fn      TIM1_UP_IRQHandler
@@ -37,6 +39,8 @@ void TIM1_UP_IRQHandler(void)
     }
     TIM_ClearITPendingBit( TIM1, TIM_IT_Update );
 }
+
+#endif
 
 /*********************************************************************
  * @fn      TIM1_INT_Init

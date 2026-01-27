@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32h417_usbhs_device.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/03/05
+ * Version            : V1.0.1
+ * Date               : 2025/12/05
  * Description        : USBHS
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -211,6 +211,8 @@ void USBHS_Device_SetAddress(UINT32 address) {
     USBHSD->DEV_AD = 0;
     USBHSD->DEV_AD = address & 0xff;
 }
+
+#if Func_Run_V3F
 /*********************************************************************
  * @fn      USBHS_IRQHandler
  *
@@ -788,6 +790,7 @@ void USBHS_IRQHandler(void)
     }
 }
 
+#endif
 
 /*********************************************************************
  * @fn      void DevEPhs_IN_Deal

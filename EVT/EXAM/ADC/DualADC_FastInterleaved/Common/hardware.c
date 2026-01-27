@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/16
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -102,6 +102,7 @@ void Hardware(void)
 	}
 }
 
+#if Func_Run_V3F
 /*********************************************************************
  * @fn      ADC1_2_IRQHandler
  *
@@ -125,3 +126,5 @@ void ADC1_2_IRQHandler()
     }
     ADC_ClearITPendingBit( ADC1, ADC_IT_EOC);
 }
+
+#endif

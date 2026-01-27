@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : sdio.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/07/16
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file contains the headers of the SDIO.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -1398,6 +1398,9 @@ SD_Error SD_WriteMultiBlocks( u8 *buf, long long addr, u16 blksize, u32 nblks )
     }
     return errorstatus;
 }
+
+#if Func_Run_V3F
+
 void SDIO_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 /*********************************************************************
@@ -1411,6 +1414,8 @@ void SDIO_IRQHandler( void )
 {
     SD_ProcessIRQSrc();
 }
+
+#endif
 
 /*********************************************************************
  * @fn      SD_ProcessIRQSrc

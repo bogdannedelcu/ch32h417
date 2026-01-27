@@ -1,7 +1,7 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : wchiochub.h
  * Author             : WCH
- * Version            : V1.2.1
+ * Version            : V1.2.2
  * Date               : 2025/04/24
  * Description        : This file contains the headers of 
 *                    the IoCHub protocol stack library.
@@ -15,12 +15,6 @@
 #define __WCHIOCHUB_H_
 
 #include <stdint.h>
-#include "net_config.h"
-#if defined (CH32V30x_D8C) ||defined (CH32V30x_D8)
-#include "ch32v30x.h"
-#elif defined (CH32V20x_D8W) ||defined (CH32V20x_D8)||defined (CH32V20x_D6)
-#include "ch32v20x.h"
-#endif
 
 
 /* The following values are fixed and cannot be changed */
