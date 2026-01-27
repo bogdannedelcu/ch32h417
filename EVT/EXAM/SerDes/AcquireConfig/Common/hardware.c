@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : hardware.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/03/01
+ * Version            : V1.0.
+ * Date               : 2025/12/05
  * Description        : This file contains all the functions prototypes for the hardware.c file.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -491,6 +491,8 @@ void Hardware(void)
     }
 }
 
+#if Func_Run_V3F
+
 void TIM1_UP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 void TIM1_UP_IRQHandler(void)
@@ -498,3 +500,5 @@ void TIM1_UP_IRQHandler(void)
     vTick++;
     TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 }
+
+#endif

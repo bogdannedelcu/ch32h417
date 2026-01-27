@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32h417_usbfs_device.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/03/05
+ * Version            : V1.0.1
+ * Date               : 2025/12/05
  * Description        : This file provides all the USBFS firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -132,6 +132,7 @@ void USBFS_Init(void) {
     NVIC_EnableIRQ(USBFS_IRQn);
 }
 
+#if Func_Run_V3F
 /*********************************************************************
  * @fn      USBFS_IRQHandler
  *
@@ -512,6 +513,7 @@ void USBFS_IRQHandler(void) {
         USBFSD->INT_FG = intflag;
     }
 }
+#endif
 
 /*********************************************************************
  * @fn      DevEP2_IN_Deal

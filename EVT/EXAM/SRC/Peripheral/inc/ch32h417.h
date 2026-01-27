@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417.h
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/10/24
+* Version            : V1.0.4
+* Date               : 2025/12/08
 * Description        : CH32H417_416_415 Device Peripheral Access Layer Header File.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -30,7 +30,7 @@
 
 /* CH32H417 Standard Peripheral Library version number */
 #define __CH32H417_STDPERIPH_VERSION_MAIN   (0x01) /* [15:8] main version */
-#define __CH32H417_STDPERIPH_VERSION_SUB    (0x03) /* [7:0] sub version */
+#define __CH32H417_STDPERIPH_VERSION_SUB    (0x04) /* [7:0] sub version */
 #define __CH32H417_STDPERIPH_VERSION        ( (__CH32H417_STDPERIPH_VERSION_MAIN << 8)\
                                              |(__CH32H417_STDPERIPH_VERSION_SUB << 0))
 
@@ -5761,6 +5761,8 @@ typedef struct
 #define  DMA_CFGR1_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
          
 #define  DMA_CFGR1_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode */
+#define  DMA_CFGR1_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR1_FLAG_CURMEM                       ((uint32_t)0x00010000)        
 
 /*******************  Bit definition for DMA_CFGR2 register  *******************/
 #define  DMA_CFGR2_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5785,6 +5787,8 @@ typedef struct
 #define  DMA_CFGR2_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
          
 #define  DMA_CFGR2_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode */
+#define  DMA_CFGR2_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR2_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /*******************  Bit definition for DMA_CFGR3 register  *******************/
 #define  DMA_CFGR3_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5809,6 +5813,8 @@ typedef struct
 #define  DMA_CFGR3_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
         
 #define  DMA_CFGR3_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode */
+#define  DMA_CFGR3_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR3_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /*******************  Bit definition for DMA_CFGR4 register  *******************/
 #define  DMA_CFGR4_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5833,6 +5839,8 @@ typedef struct
 #define  DMA_CFGR4_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
                       
 #define  DMA_CFGR4_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode */
+#define  DMA_CFGR4_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR4_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /******************  Bit definition for DMA_CFGR5 register  *******************/
 #define  DMA_CFGR5_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5857,6 +5865,8 @@ typedef struct
 #define  DMA_CFGR5_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
                       
 #define  DMA_CFGR5_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode enable */
+#define  DMA_CFGR5_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR5_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /*******************  Bit definition for DMA_CFGR6 register  *******************/
 #define  DMA_CFGR6_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5881,6 +5891,8 @@ typedef struct
 #define  DMA_CFGR6_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
                       
 #define  DMA_CFGR6_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode */
+#define  DMA_CFGR6_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR6_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /*******************  Bit definition for DMA_CFGR7 register  *******************/
 #define  DMA_CFGR7_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5905,6 +5917,8 @@ typedef struct
 #define  DMA_CFGR7_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
         
 #define  DMA_CFGR7_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode enable */
+#define  DMA_CFGR7_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR7_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /*******************  Bit definition for DMA_CFGR8 register  *******************/
 #define  DMA_CFGR8_EN                                ((uint16_t)0x0001)            /* Channel enable */
@@ -5929,6 +5943,8 @@ typedef struct
 #define  DMA_CFGR8_PL_1                              ((uint16_t)0x2000)            /* Bit 1 */
                       
 #define  DMA_CFGR8_MEM2MEM                           ((uint16_t)0x4000)            /* Memory to memory mode enable */
+#define  DMA_CFGR8_DOUBLE_MODE                       ((uint16_t)0x8000)            /* Memory to double mode */
+#define  DMA_CFGR8_FLAG_CURMEM                       ((uint32_t)0x00010000) 
 
 /******************  Bit definition for DMA_CNTR1 register  ******************/
 #define  DMA_CNTR1_NDT                               ((uint16_t)0xFFFF)            /* Number of data to Transfer */
@@ -7014,8 +7030,8 @@ typedef struct
 #define  I3C_CFGR_SFLUSH                             ((uint32_t)0x00020000)
 #define  I3C_CFGR_SMODE                              ((uint32_t)0x00040000)
 #define  I3C_CFGR_TMODE                              ((uint32_t)0x00080000)
-#define  I3C_CFGR_CDMAEN                             ((uint32_t)0x00010000)
-#define  I3C_CFGR_CFLUSH                             ((uint32_t)0x00020000)
+#define  I3C_CFGR_CDMAEN                             ((uint32_t)0x00100000)
+#define  I3C_CFGR_CFLUSH                             ((uint32_t)0x00200000)
 
 #define  I3C_CFGR_TSFSET                             ((uint32_t)0x40000000)
 
@@ -10517,8 +10533,6 @@ typedef struct
 #define  LTDC_GCR_DRW_0                              ((uint32_t)0x00001000)
 #define  LTDC_GCR_DRW_1                              ((uint32_t)0x00002000)
 #define  LTDC_GCR_DRW_2                              ((uint32_t)0x00004000)
-
-#define  LTDC_GCR_DEN                                ((uint32_t)0x00010000)
 
 #define  LTDC_GCR_PCPOL                              ((uint32_t)0x10000000)
 #define  LTDC_GCR_DEPOL                              ((uint32_t)0x20000000)

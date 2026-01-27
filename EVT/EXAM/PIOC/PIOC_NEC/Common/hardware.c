@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -51,6 +51,8 @@ __attribute__((aligned(16)))  const unsigned char PIOC_CODE[] =
     0x03,0x5A,0x96,0x60,0x80,0x28,0x20,0x60,0x00,0x00,0x00,0x00,0x00,0x00,0x1A,0x60,
     0xBD,0x60};	
 
+#if Func_Run_V3F
+
 /*********************************************************************
  * @fn      PIOC_IRQHandler
  *
@@ -90,6 +92,8 @@ void PIOC_IRQHandler( void )
         R8_CTRL_RD=11;                  // False write any value to R8_CTRL_RD, clear interrupt flag
     }
 }
+
+#endif
 
 /*********************************************************************
  * @fn      PIOC_INIT

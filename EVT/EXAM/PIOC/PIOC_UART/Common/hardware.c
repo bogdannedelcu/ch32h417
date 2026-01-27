@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -153,6 +153,7 @@ u8 pbuf1[] = {
     0x55,
 };
 
+#if Func_Run_V3F
 /*********************************************************************
  * @fn      PIOC_INIT
  *
@@ -188,7 +189,7 @@ void PIOC_INIT(void)
     R8_SYS_CFG |= RB_MST_CLK_GATE;                                      // open PIOC clock
 
 }
-
+#endif 
 /*********************************************************************
  * @fn      PIOC_IRQHandler
  *

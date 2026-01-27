@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main_v3f.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/03/01
+ * Version            : V1.0.1
+ * Date               : 2026/01/14
  * Description        : Main program body for V3F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -40,14 +40,7 @@ int main(void)
 	SystemInit();
 	SystemAndCoreClockUpdate();
 	Delay_Init();
-		Delay_Ms(100);
-	RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);   
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);
 	USART_Printf_Init(115200);
-	Delay_Ms(1000);
-
-	RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);   
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);
 	printf("SystemClk:%d\r\n", SystemClock);
 	printf("V3F SystemCoreClk:%d\r\n", SystemCoreClock);
 	Delay_Ms(500);

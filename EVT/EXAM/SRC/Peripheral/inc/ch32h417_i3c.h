@@ -1,10 +1,10 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_i3c.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/04
 * Description        : This file contains all the functions prototypes for the
-*                      RNG firmware library.
+*                      I3C firmware library.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
 * Attention: This software (modified or not) and binary are used for 

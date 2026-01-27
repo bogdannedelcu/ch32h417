@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : SoftUART.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/09/16
+ * Version            : V1.0.2
+ * Date               : 2025/12/12
  * Description        : Simulate UART with software
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -50,6 +50,8 @@ static u8 isOdd(u16 data)
 
     return CNT % 2;
 }
+
+#if Func_Run_V3F
 
 void TIM1_UP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast"))); /* Interrupt handler function */
 /*********************************************************************
@@ -163,6 +165,7 @@ void EXTI7_0_IRQHandler(void)
     }
 }
 
+#endif
 /*********************************************************************
  * @fn      RxInit
  *
@@ -202,7 +205,7 @@ static void RxInit(void)
     TIM_ITConfig(SoftUARTHardware.rxTIM, TIM_IT_Update, ENABLE);
     TIM_ARRPreloadConfig(SoftUARTHardware.rxTIM, ENABLE);
 
-    NVIC_SetPriority(TIM1_UP_IRQn,0<4);
+    NVIC_SetPriority(TIM1_UP_IRQn,1<<4);
     NVIC_EnableIRQ(TIM1_UP_IRQn);
 }
 

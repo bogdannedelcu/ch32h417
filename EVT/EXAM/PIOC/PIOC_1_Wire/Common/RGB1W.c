@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : RGB1W.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/03/01
+ * Version            : V1.0.2
+ * Date               : 2025/12/05
  * Description        : 1-wire example 1W-RGB, 1W-DS1820
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -108,6 +108,8 @@ __attribute__((aligned(16)))  const unsigned char PIOC_1W_CODE[] =
 
 __IO  uint8_t	stat;
 
+#if Func_Run_V3F
+
 void PIOC_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 /*********************************************************************
@@ -126,6 +128,7 @@ void PIOC_IRQHandler( void )
 //	temper = PIOC->D16_DATA_REG0_1;//for DS1820 only
 }
 
+#endif
 /*********************************************************************
  * @fn      RGB1W_Init
  *

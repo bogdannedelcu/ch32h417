@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/07/16
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -19,6 +19,8 @@
 volatile uint8_t SampleFlag = 0;
 volatile uint32_t rtc_cnt = 0;
 
+#if Func_Run_V3F
+
 void TIM1_UP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void TIM1_UP_IRQHandler()
 {
@@ -27,6 +29,8 @@ void TIM1_UP_IRQHandler()
     RTC_SetCounter(0);
     TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 }
+
+#endif
 
 /*********************************************************************
  * @fn      RTC_Init

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/17
+* Version            : V1.0.3
+* Date               : 2026/01/13
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -98,55 +98,71 @@ void EXTI_INT_INIT(void)
  */
 void HSIAsSystemSource(void)
 {
-  RCC->CTLR |= (uint32_t)0x00000001;
-  RCC->CFGR0 &= (uint32_t)0x305C0000;
-  while ((RCC->CFGR0 & (uint32_t)RCC_SWS) != (uint32_t)0x00);
-  RCC->CFGR0 &= (uint32_t)0xFFBFFFFF;
+	RCC->CTLR |= (uint32_t)0x00000001;
+	RCC->CFGR0 &= (uint32_t)0x305C0000;
+	while ((RCC->CFGR0 & (uint32_t)RCC_SWS) != (uint32_t)0x00);
+	RCC->CFGR0 &= (uint32_t)0xFFBFFFFF;
 
-  RCC->PLLCFGR &= (uint32_t)0x7FFFFFFF;
+	RCC->PLLCFGR &= (uint32_t)0x7FFFFFFF;
 
-  RCC->CTLR &= (uint32_t)0x6AA6FFFF;
-  RCC->CTLR &= (uint32_t)0xFFFBFFFF;
+	RCC->CTLR &= (uint32_t)0x6AA6FFFF;
+	RCC->CTLR &= (uint32_t)0xFFFBFFFF;
 
-  RCC->PLLCFGR &= (uint32_t)0x0FFC0000;
-  RCC->PLLCFGR |= (uint32_t)0x00000004;
+	RCC->PLLCFGR &= (uint32_t)0x0FFC0000;
+	RCC->PLLCFGR |= (uint32_t)0x00000004;
 
-  RCC->INTR = 0x00FF0000;
-  RCC->CFGR2 &= 0x0C600000;
-  RCC->PLLCFGR2 &= 0xFFF0E080;
-  RCC->PLLCFGR2 |= 0x00080020;
+	RCC->INTR = 0x00FF0000;
+	RCC->CFGR2 &= 0x0C600000;
+	RCC->PLLCFGR2 &= 0xFFF0E080;
+	RCC->PLLCFGR2 |= 0x00080020;
 }
 
 /*********************************************************************
  * @fn      PWR_STOPMode_LP_Cmd
  *
- * @brief   Reduce the VDDK voltage in the stop lowpower mode.
+ * @brief   Reduce the VDDK voltage in stop mode with the voltage regulator 
+ *          in low-power mode.
  *
  * @return  none
  */
 void PWR_STOPMode_LP_Cmd(FunctionalState NewState)
 {
+    uint32_t id = 0;
+    id = (((*(uint32_t *)0x1FFFF704) & (0x000000F0)) >> 4);
     if(NewState != DISABLE)
     {
-        if(((*(uint32_t *)0x1FFFF704) & (0x000000F0)) == 0)
+        switch(id)
         {
-            cfg &= ~((0x7 << 17));
-            cfg |= ((0x1 << 17));
+            case 0:
+            {
+                cfg &= ~((0x7 << 17));
+                cfg |= ((0x1 << 17));
+                break;
+            }
+            case 1:
+            {
+                cfg &= ~((0x7 << 17) | (0x7 << 4));
+                cfg |= ((0x1 << 4));
+                break;
+            }
+            case 2:
+            {
+                cfg &= ~((0x7 << 17) | (0x7 << 4));
+                break;
+            }
+            default:
+            {
+                break;
+            }
         }
-        else
-        {
-            cfg &= ~((0x7 << 17) | (0x7 << 4));
-            cfg |= ((0x1 << 4));
-        }
-
         *(vu32*)SYS_CFGR0_BASE = cfg;
     }
     else
     {
-      *(vu32*)SYS_CFGR0_BASE = tmp;
-      Delay_Us(200);
+        *(vu32*)SYS_CFGR0_BASE = tmp;
+        Delay_Us(200);
     }
-} 
+}
 
 /*********************************************************************
  * @fn      Hardware
@@ -165,19 +181,19 @@ void Hardware(void)
 #if ((Run_Core == Run_Core_V3FandV5F) || (Run_Core == Run_Core_V5F))
 #ifdef Core_V5F 
         __asm("fence");
-        /* wait V3 sleep */
+        /* wait V3F sleep */
         while((NVIC->CSTAR[0] & 0xC000) == RESET);
         /* The frequency needs to be reduced before lowering the VDDK */
         HSIAsSystemSource();
-        /* In stop lowpower mode,to reduce power consumption, VDDK needs to be lowered 
-		before stop, And it is recommended to turn off all peripherals. */
+        /* In stop mode with the voltage regulator in low-power mode,to reduce power consumption, 
+		VDDK needs to be lowered and it is recommended to turn off all peripherals before enter stop mode. */
         PWR_STOPMode_LP_Cmd(ENABLE);
 #endif
 #else
         /* The frequency needs to be reduced before lowering the VDDK */
         HSIAsSystemSource();
-        /* In stop lowpower mode,to reduce power consumption, VDDK needs to be lowered 
-		before stop, And it is recommended to turn off all peripherals. */
+        /* In stop mode with the voltage regulator in low-power mode,to reduce power consumption, 
+		VDDK needs to be lowered and it is recommended to turn off all peripherals before enter stop mode. */
         PWR_STOPMode_LP_Cmd(ENABLE);
 #endif
 
@@ -196,6 +212,7 @@ void Hardware(void)
 }
 
 #if(Enter_MODE == Enter_WFI)
+#if Func_Run_V5F
 void EXTI15_8_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      EXTI15_8_IRQHandler
@@ -217,8 +234,10 @@ void EXTI15_8_IRQHandler(void)
 	  printf("V5F EXTI11 Wake_up\r\n");
     EXTI_ClearITPendingBit(EXTI_Line11);
   }
-} 
+}
+#endif 
 
+#if Func_Run_V3F
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      EXTI7_0_IRQHandler
@@ -240,5 +259,7 @@ void EXTI7_0_IRQHandler(void)
     printf("V3F EXTI0 Wake_up\r\n");
     EXTI_ClearITPendingBit(EXTI_Line1);
   }
-} 
+}
+#endif
+
 #endif

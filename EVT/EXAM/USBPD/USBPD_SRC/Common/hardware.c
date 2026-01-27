@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -11,6 +11,7 @@
 *******************************************************************************/
 #include "hardware.h"
 #include "PD_Process.h"
+
 
 void TIM1_UP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 volatile UINT8  Tim_Ms_Cnt = 0x00;
@@ -32,7 +33,6 @@ void TIM1_Init( u16 arr, u16 psc )
     TIM_ITConfig( TIM1, TIM_IT_Update, ENABLE );
     TIM_Cmd( TIM1, ENABLE );
 }
-
 
 /*********************************************************************
  * @fn      Hardware
@@ -83,6 +83,9 @@ void Hardware(void)
     }
        #endif
 }
+
+#if Func_Run_V3F
+
 /*********************************************************************
  * @fn      TIM1_UP_IRQHandler
  *
@@ -99,3 +102,4 @@ void TIM1_UP_IRQHandler(void)
     }
 }
 
+#endif

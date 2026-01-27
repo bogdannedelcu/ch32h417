@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : PD_process.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/03/06
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the PD firmware functions.
 *********************************************************************************
 * Copyright (c) 2023 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -53,6 +53,8 @@ UINT8 Status_Ext_Tab[ 8 ] =
     0X00, 0X00, 0X00, 0X00,
 };
 
+#if Func_Run_V3F
+
 /*********************************************************************
  * @fn      USBPD_IRQHandler
  *
@@ -100,6 +102,7 @@ void USBPD_IRQHandler(void)
     }
 }
 
+#endif
 /*********************************************************************
  * @fn      PD_Rx_Mode
  *

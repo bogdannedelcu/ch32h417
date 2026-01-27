@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/17
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -269,6 +269,8 @@ void Hardware(void)
     while(1);
 }
 
+#if Func_Run_V3F
+
 /*********************************************************************
  * @fn      DFSDM0_IRQHandler
  *
@@ -292,3 +294,5 @@ void DFSDM0_IRQHandler(void)
         DFSDM_ClearITPendingBit(DFSDM_FLT0, DFSDM_IT_FLAG_FLT0_SCDF0);
     }
 }
+
+#endif

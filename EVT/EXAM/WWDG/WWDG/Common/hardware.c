@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -15,6 +15,7 @@
 #define WWDG_CNT    0X7F
 
 /* Global Variable */
+#if Func_Run_V3F
 
 void WWDG_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
@@ -30,6 +31,7 @@ void WWDG_IRQHandler(void)
   WWDG_SetCounter(WWDG_CNT);
 }
 
+#endif 
 
 /*********************************************************************
  * @fn      WWDG_NVIC_Config

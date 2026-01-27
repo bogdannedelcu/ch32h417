@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main_v3f.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/03/01
+ * Version            : V1.0.1
+ * Date               : 2026/01/14
  * Description        : Main program body for V3F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -13,8 +13,8 @@
 /*
  *@Note
  Timer DMA routines:
- TIM1_CH1(PA8)
- This example demonstrates using DMA to output PWM through TIM1_CH1(PA8) pin.
+ TIM1_CH2(PE11)
+ This example demonstrates using DMA to output PWM through TIM1_CH2(PE11) pin.
 
 */
 

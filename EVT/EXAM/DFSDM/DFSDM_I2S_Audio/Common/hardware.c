@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/17
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -285,7 +285,7 @@ void Hardware(void)
     }
 
 }
-
+#if Func_Run_V3F
 
 /*********************************************************************
  * @fn      SPI2_IRQHandler
@@ -307,3 +307,5 @@ void SPI2_IRQHandler(void)
         TxCnt++;
     }
 }
+
+#endif

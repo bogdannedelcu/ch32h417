@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/02
+* Version            : V1.0.2
+* Date               : 2025/12/05
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -112,6 +112,7 @@ void Hardware(void)
 }
 
 #if(Enter_MODE == Enter_WFI)
+#if Func_Run_V3F
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      EXTI7_0_IRQHandler
@@ -128,8 +129,9 @@ void EXTI7_0_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line1); /* Clear Flag */
   }
 } 
+#endif
 
-
+#if Func_Run_V5F
 void EXTI15_8_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      EXTI15_8_IRQHandler
@@ -146,4 +148,6 @@ void EXTI15_8_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line11); /* Clear Flag */
   }
 } 
+#endif
+
 #endif

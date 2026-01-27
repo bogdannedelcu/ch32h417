@@ -73,38 +73,49 @@ void WCHIOCHUB_regCallback (u16 state) {
 
     return;
 }
-
+uint8_t session_exit_flag = 0;
 void WCHIOCHUB_sessionStateCallBackP (IoCHubHANDLE pDev, u16 states) {
     printf ("IoCHubHANDLE:%u,states:%u\n", pDev, states);
     switch (states) {
-    case IOCHUB_SUCCESS: {
-        static uint16_t transtype = 0XFFFF;
-        uint8_t nodeid[8] = {0};
-        uint8_t nodeIP[4] = {0};
-        if (transtype != WCHIOCHUB_GetTransferType (pDev)) {
-            transtype = WCHIOCHUB_GetTransferType (pDev);
-            WCHIOCHUB_GetNodeID (pDev, nodeid);
-            WCHIOCHUB_GetNodeIP (pDev, nodeIP);
-            printf ("nodeid: %.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x\r\n",
-                    nodeid[0], nodeid[1], nodeid[2], nodeid[3],
-                    nodeid[4], nodeid[5], nodeid[6], nodeid[7]);
-            printf ("nodeIP: %d.%d.%d.%d\r\n",
-                    nodeIP[0], nodeIP[1], nodeIP[2], nodeIP[3]);
-            printf ("IoCHub_TransferType: %u\r\n", transtype);
-            if (transtype == IOCHUB_SESSION_NOT_EXIT) {
-				lwrb_reset(&IoCHubLoopbackBuf);
-                sessionopenflag &= (~(1 << pDev)) & 0xff;
-            } else {
-                if (!(sessionopenflag & (1 << pDev))) {
-                    sessionopenflag |= (1 << pDev);
+        case IOCHUB_SUCCESS: {
+            static uint16_t transtype = 0XFFFF;
+            uint8_t nodeid[8] = {0};
+            uint8_t nodeIP[4] = {0};
+            if (transtype != WCHIOCHUB_GetTransferType (pDev)) {
+                transtype = WCHIOCHUB_GetTransferType (pDev);
+                WCHIOCHUB_GetNodeID (pDev, nodeid);
+                WCHIOCHUB_GetNodeIP (pDev, nodeIP);
+                printf ("nodeid: %.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x\r\n",
+                        nodeid[0], nodeid[1], nodeid[2], nodeid[3],
+                        nodeid[4], nodeid[5], nodeid[6], nodeid[7]);
+                printf ("nodeIP: %d.%d.%d.%d\r\n",
+                        nodeIP[0], nodeIP[1], nodeIP[2], nodeIP[3]);
+                printf ("IoCHub_TransferType: %u\r\n", transtype);
+                if (transtype == IOCHUB_SESSION_NOT_EXIT) {
+                    lwrb_reset(&IoCHubLoopbackBuf);
+                    sessionopenflag &= (~(1 << pDev)) & 0xff;
+                } else {
+                    if (!(sessionopenflag & (1 << pDev))) {
+                        sessionopenflag |= (1 << pDev);
+                    }
                 }
             }
-        }
-    } break;
-    default:
-        break;
+        } break;
+        case IOCHUB_SESSION_EXIT: {
+            if(session_exit_flag<2)
+            {
+                session_exit_flag++;
+            }
+            else 
+            {
+                session_exit_flag=0;
+                WCHIOCHUB_CloseSession(pDev);
+                printf("Session has been closed.\r\n");
+            }
+        }break;
+        default:
+            break;
     }
-
     return;
 }
 
@@ -199,15 +210,17 @@ void IoCHub_Init (void) {
 }
 
 void WCHIOCHUB_StartEn (void) {
-    if (!WCHIOCHUB_GetDeviceSerState())
+    if (!WCHIOCHUB_GetDeviceSerState()){
         WCHIOCHUB_Start (wchIochubSerIp,
-                         wchIochubSerPort,
-                         wchIochubScrPort,
-                         localDeviceID,
-                         logindeviceSecret,
-                         0x00,
-                         0x01,
-                         WCHIOCHUB_regCallback);
+                        wchIochubSerPort,
+                        wchIochubScrPort,
+                        localDeviceID,
+                        logindeviceSecret,
+                        0x00,
+                        0x01,
+                        WCHIOCHUB_regCallback);
+    }
+        
 }
 
 u8 CmpMemory (u8 *ptr1, u8 *ptr2, u8 cmdlen) {

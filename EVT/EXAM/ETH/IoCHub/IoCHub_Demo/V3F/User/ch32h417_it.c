@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_it.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/01/15
 * Description        : Main Interrupt Service Routines.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -63,7 +63,7 @@ void HardFault_Handler(void)
  */
 void TIM2_IRQHandler (void) {
   static uint8_t counter = 0;
-  if (counter >= 10) {
+  if (counter >= WCHNETTIMERPERIOD) {
       counter = 0;
       WCHNET_TimeIsr (WCHNETTIMERPERIOD);
   }
