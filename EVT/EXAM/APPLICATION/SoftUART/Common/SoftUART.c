@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : SoftUART.c
  * Author             : WCH
- * Version            : V1.0.2
- * Date               : 2025/12/12
+ * Version            : V1.0.3
+ * Date               : 2026/04/09
  * Description        : Simulate UART with software
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -399,8 +399,8 @@ static u8 ReceiveBytes(vu8 *data, u16 timeout)
 void Init(void)
 {
     // Configure the RCC used
-    RCC_PB2PeriphClockCmd(RCC_PB2Periph_GPIOA | RCC_PB2Periph_TIM1 | RCC_PB2Periph_AFIO | RCC_PB2Periph_GPIOD, ENABLE);
-    RCC_PB1PeriphClockCmd(RCC_PB1Periph_TIM2, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOE | RCC_HB2Periph_TIM1 | RCC_HB2Periph_AFIO , ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_TIM8, ENABLE);
     RCC_HBPeriphClockCmd(RCC_HBPeriph_DMA1, ENABLE);
     // Select the peripheral used for the SoftUart
     SoftUARTHardware.rxTIM = DEFAULT_RXTIM;
@@ -430,6 +430,7 @@ void Init(void)
     // Periph initialize
     RxInit();
     TxInit();
+    DMA_MuxChannelConfig(DMA_MuxChannel2,36);  //DMA channel 2 to TIM8_UP
 }
 #else
 
@@ -446,7 +447,7 @@ void Init(void)
 void Init(u32 baudrate)
 {
     // Configure the RCC used
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOE | RCC_HB2Periph_TIM1 | RCC_HB2Periph_AFIO | RCC_HB2Periph_GPIOD, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOE | RCC_HB2Periph_TIM1 | RCC_HB2Periph_AFIO , ENABLE);
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_TIM8, ENABLE);
     RCC_HBPeriphClockCmd(RCC_HBPeriph_DMA1, ENABLE);
 

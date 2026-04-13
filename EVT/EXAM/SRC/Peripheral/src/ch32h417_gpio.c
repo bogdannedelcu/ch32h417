@@ -585,8 +585,17 @@ void GPIO_IPD_Unused(void)
     uint32_t chip = 0;
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_GPIOB | RCC_HB2Periph_GPIOC|\
                            RCC_HB2Periph_GPIOD | RCC_HB2Periph_GPIOE | RCC_HB2Periph_GPIOF, ENABLE);
-    FLASH_BOOT_GetMode();                       
     
+    volatile uint32_t tmp;
+    tmp = (*(volatile uint32_t*)0x4002a010) & (uint32_t) (~(0xFF));
+    tmp |= (uint32_t)0x1B;
+    *(volatile uint32_t*)0x4002a010 = tmp;
+
+    tmp = (*(volatile uint32_t*)0x4002a014) & (uint32_t) (~(0x3F));
+    tmp |= (uint32_t)0x0E;
+    *(volatile uint32_t*)0x4002a014 = tmp;
+
+    FLASH_BOOT_GetMode();                       
     if( ((*(uint32_t *)0x1FFFF704) & (0x000000F0))  == 0 )
     {
         RCC_HB1PeriphClockCmd(RCC_HB1Periph_SWPMI,ENABLE);

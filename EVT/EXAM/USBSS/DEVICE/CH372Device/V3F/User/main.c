@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/05/07
+ * Version            : V1.0.1
+ * Date               : 2026/04/10
  * Description        : Main program body for V3F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -49,6 +49,9 @@ int main(void)
 
     Delay_Init();
     USART_Printf_Init(921600);
+
+    Chip = (( DBGMCU_GetCHIPID() >> 4 ) & 0x0F);
+	
     printf("SystemClk:%d\r\n", SystemClock);
     printf("V3F SystemCoreClk:%d\r\n", SystemCoreClock);
     printf("CH372Device Running On USBSS Controller\n");

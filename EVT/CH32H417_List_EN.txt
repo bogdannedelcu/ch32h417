@@ -1,5 +1,5 @@
 
-Nanjing Qinheng Microelectronics Co., Ltd. 2026.01
+Nanjing Qinheng Microelectronics Co., Ltd. 2026.04
 
 https://wch-ic.com
 
@@ -33,8 +33,12 @@ Directory
   |      |      |      |      |-- DualADC_RegSimul: dual ADC regular simultaneous sampling routine
   |      |      |      |      |-- DualADC_SlowInterleaved: dual ADC slow interleaved sampling routine  
   |      |      |      |      |-- TIM_Trigger:TIM trigger ADC conversion routine 
+  |      |      |      |      |-- Internal_Temperature：Internal temperature sensor routine 
+  |      |      |      |      |-- DualDAC_Triangle：Dual DAC output triangular wave routine
   |      |      |      |-- APPLICATION
   |      |      |      |      |-- SoftUART: I/O port simulation serial port routine 
+  |      |      |      |      |-- LTDC_LVGL: use LTDC driver to display some animations on the LCD
+  |      |      |      |      |-- FATFS_eMMC：Eight-line operation EMMC card porting file read-write system FATFS
   |      |      |      |-- CAN
   |      |      |      |      |-- Networking: CAN routine: normal mode, standard frame and expanded frame data transceiver
   |      |      |      |      |-- TestMode: test mode, including silent mode, loopback mode and loopback silent mode
@@ -54,6 +58,11 @@ Directory
   |      |      |      |      |      |-- Interrupt_Nest：interrupt nested routine
   |      |      |      |      |      |-- Interrupt_VTF：VTF IRQ interrupt routine  
   |      |      |      |      |-- SYSTICK_Interrupt：Systick timer routine
+  |      |      |      |      |-- INT：
+  |      |      |      |      |      |-- Interrupt_Permission：Custom interrupt permission routine
+  |      |      |      |      |      |-- Interrupt_VTF：VTF interrupt routine  
+  |      |      |      |      |-- OS： 
+  |      |      |      |      |      |-- FreeRTOS：FreeRTOS routine 
   |      |      |      |-- CRC
   |      |      |      |      |-- CRC_Calculation：CRC routine
   |      |      |      |-- DAC 
@@ -73,7 +82,8 @@ Directory
   |      |      |      |      |-- DFSDM_InternalStandardMode：Internal parallel input, standard mode conversion routine
   |      |      |      |      |-- DFSDM_SerialSPI：External serial input conversion routine
   |      |      |      |      |-- DFSDM_Synchronous_Regular：Rule group synchronous conversion routine
-  |      |      |      |      |-- DFSDM_TIMTrigger： Timer triggers the conversion routine
+  |      |      |      |      |-- DFSDM_TIMTrigger：Timer triggers the conversion routine
+  |      |      |      |      |-- DFSDM_SAI_Audio: The routine demonstrates the use of DFSDM to capture PDM stereo audio, which is synchronously played back by SAI
   |      |      |      |-- ECDC
   |      |      |      |      |-- RAM_Block：ECDC RAM Block Self-encryption and decryption routine
   |      |      |      |      |-- Single_Time：ECDC Single encryption and decryption routine
@@ -85,6 +95,7 @@ Directory
   |      |      |      |-- DVP 
   |      |      |      |      |-- DVP_TFTLCD: DVP routine to operate OV2640 and OV5640 camera video mode to display image on LCD
   |      |      |      |      |-- DVP_UART: DVP routine to operate OV2640 camera JPEG mode
+  |      |      |      |      |-- DVP_LTDC：The routine demonstrates the image acquisition by a DVP interface camera and its real-time display on a TFTLCD through LTDC
   |      |      |      |-- ETH
   |      |      |      |      |-- DHCP: DHCP demonstration routine to obtain IP automatically
   |      |      |      |      |-- DNS: DHCP demonstration routine to obtain IP automatically and then request domain name resolution 
@@ -213,9 +224,11 @@ Directory
   |      |      |      |      |-- PVD_VoltageJudger：PVD voltage Judger routine
   |      |      |      |      |-- SEL_VIO18：VIO18 software configuration routine
   |      |      |      |      |-- VDD12_ExternPower：VDD 1.2V external power supply routine
+  |      |      |      |      |-- VDD12_ExternPowerInStopLP：Routine demonstration of STOPLP mode, VDD 1.2v external power supply, current reduction method
   |      |      |      |-- QSPI
   |      |      |      |      |-- QSPI_FLASH：QSPI operate Winbond W25Qxx SPI_FLASH routine
   |      |      |      |      |-- QSPI_FLASH_DMA：QSPI operates the Winbond W25Qxx SPI_FLASH routine through DMA
+  |      |      |      |      |-- QSPI_MemoryMap：This example describes how to use QSPI in memory-map mode and how to perform DMA mode read operations in memory-map mode.
   |      |      |      |-- RCC
   |      |      |      |      |-- Get_CLK:Get system-HCLK-Core-ADCCLK clock routine  
   |      |      |      |      |-- MCO: MCO pin clock output routine
@@ -316,6 +329,8 @@ Directory
   |      |      |      |      |      |      |-- CH372Device：Simulate custom USB devices (CH372 devices), with endpoint 1 downloading data and uploading it through endpoint 2, endpoint 2 downloading data and uploading it through endpoint 1, and endpoint 3 independently downloading and uploading data.
   |      |      |      |      |      |      |-- UVC
   |	     |      |      |      |      |      |      |-- UVC-DVP: Retrieve data from DVP and upload it via USB, supporting MJPEG format.
+  |      |      |      |      |      |-- HOST
+  |      |      |      |      |      |      |-- HOST_SS_ACCESS_SECTOR: USBSS scanning routine
   |      |      |      |-- USBPD
   |      |      |      |      |-- USBPD_SNK：PD SNK routine
   |      |      |      |      |-- USBPD_SRC：PD SRC routine   

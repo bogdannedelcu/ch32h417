@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/12/05
+* Version            : V1.0.2
+* Date               : 2026/03/25
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -28,12 +28,12 @@
 
 #if Func_Run_V3F
 
-void LPTIM1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void LPTIM1_WKUP_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
-void LPTIM1_IRQHandler(void)
+void LPTIM1_WKUP_IRQHandler(void)
 {
    USART_Printf_Init(115200);
-    if((LPTIM_GetFlagStatus(LPTIM1,LPTIM_FLAG_ARRM)==SET))
+    if((LPTIM_GetFlagStatus(LPTIM1,LPTIM_FLAG_CMPM)==SET))
     {
          printf("----11wake up\r\n");
  
@@ -42,7 +42,8 @@ void LPTIM1_IRQHandler(void)
         USART_Printf_Init(115200);
 #endif
      }
-     LPTIM_ClearFlag(LPTIM1, LPTIM_FLAG_ARRM);
+     EXTI_ClearITPendingBit(EXTI_Line23);
+     LPTIM_ClearFlag(LPTIM1, LPTIM_FLAG_CMPM);
 }
 
 #endif 
@@ -69,8 +70,8 @@ void LPTIM_Init(u16 arr)
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
     EXTI_Init(&EXTI_InitStructure);
 
-    NVIC_SetPriority(LPTIM1_IRQn, 0);
-    NVIC_EnableIRQ(LPTIM1_IRQn);
+    NVIC_SetPriority(LPTIM1_WKUP_IRQn, 0);
+    NVIC_EnableIRQ(LPTIM1_WKUP_IRQn);
 
     LPTIM_Cmd(LPTIM1,ENABLE);
 
@@ -103,11 +104,11 @@ void LPTIM_Init(u16 arr)
     LPTIM_TimeBaseInitStruct.LPTIM_ContinuousMode = ENABLE;
     LPTIM_TimeBaseInitStruct.LPTIM_PWMOut = DISABLE;
     LPTIM_TimeBaseInitStruct.LPTIM_CounterDirIndicat = DISABLE;
-    LPTIM_TimeBaseInitStruct.LPTIM_Pulse = 0;
+    LPTIM_TimeBaseInitStruct.LPTIM_Pulse = arr/4;
     LPTIM_TimeBaseInitStruct.LPTIM_Period = arr;
 
     LPTIM_TimeBaseInit(LPTIM1, & LPTIM_TimeBaseInitStruct);
-    LPTIM_ITConfig(LPTIM1,LPTIM_IT_ARRM, ENABLE);
+
 }
 
 
@@ -122,7 +123,7 @@ void Hardware(void)
 #if(WKMODE==EXWAKEUP)
     LPTIM_Init(20);
 #elif(WKMODE==INWAKEUP)
-       LPTIM_Init(2000);
+       LPTIM_Init(4000);
 
 #endif
 

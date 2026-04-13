@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_dvp.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/08/12
+* Version            : V1.0.2
+* Date               : 2026/02/08
 * Description        : This file contains all the functions prototypes for the 
 *                      DVP firmware library.
 *********************************************************************************
@@ -19,7 +19,7 @@
 
 #include "ch32h417.h"
 
-/* SPI Init structure definition */
+/* DVP Init structure definition */
 typedef struct
 {
     uint16_t DVP_ROW_NUM;             /* Specifies the DVP ROW number.

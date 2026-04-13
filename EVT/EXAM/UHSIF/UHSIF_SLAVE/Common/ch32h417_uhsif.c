@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32h417_uhsif.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/05/26
+ * Version            : V1.0.1
+ * Date               : 2025/04/10
  * Description        : This file provides all the UHSIF firmware functions.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -31,8 +31,8 @@ comm_t UHSIF_RD_COMM;
     UHSIF_Para_Init( );
 
     /* For the UHSIF pin initialization, the host needs to configure the frequency division coefficient */
-    // UHSIF_GPIO_Init( DEF_UHSIF_SLAVE_FPGA_MODE, DEF_UHSIF_PINREMAP2, DEF_UHSIF_CLKREMAP1, 0, DEF_UHSIF_DATA_BIT32 );
-    UHSIF_GPIO_Init( DEF_UHSIF_SLAVE_SOC_MODE, DEF_UHSIF_PINREMAP2, DEF_UHSIF_CLKREMAP1, 0 , DEF_UHSIF_DATA_BIT32 ); 
+    UHSIF_GPIO_Init( DEF_UHSIF_SLAVE_FPGA_MODE, DEF_UHSIF_PINREMAP2, DEF_UHSIF_CLKREMAP1, 0, DEF_UHSIF_DATA_BIT32 );
+    // UHSIF_GPIO_Init( DEF_UHSIF_SLAVE_SOC_MODE, DEF_UHSIF_PINREMAP2, DEF_UHSIF_CLKREMAP1, 0 , DEF_UHSIF_DATA_BIT32 ); 
     // UHSIF_GPIO_Init( DEF_UHSIF_MASTER_MODE, DEF_UHSIF_PINREMAP2, DEF_UHSIF_CLKREMAP1, RCC_UHSIFDIV_DIV4, DEF_UHSIF_DATA_BIT32 );
 
     /* Initialization of UHSIF-related registers */  

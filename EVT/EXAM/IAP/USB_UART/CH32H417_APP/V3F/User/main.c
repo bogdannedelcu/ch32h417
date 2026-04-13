@@ -10,14 +10,6 @@
  * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
-/*
- *@Note
- *External interrupt line routine:
- *EXTI_Line0(PB0)
- *PB0 is set as a pull-up input, and the falling edge triggers an interrupt.
- *
- */
-
 #include "debug.h"
 #include "hardware.h"
 
@@ -40,7 +32,6 @@ int main(void)
 	USART_Printf_Init(115200);
 	Delay_Ms(1000);
 
-	printf("V3_APP\r\n");
 	printf("SystemClk:%d\r\n", SystemClock);
 	printf("V3F SystemCoreClk:%d\r\n", SystemCoreClock);
 	Delay_Ms(500);

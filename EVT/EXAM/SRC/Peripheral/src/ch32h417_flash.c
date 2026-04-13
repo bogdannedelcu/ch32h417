@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_flash.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/18
+* Version            : V1.0.2
+* Date               : 2026/04/08
 * Description        : This file provides all the FLASH firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -868,6 +868,27 @@ void FLASH_LP_Cmd(FunctionalState NewState)
     else
     {
         FLASH->ACTLR &= ~FLASH_ACTLR_LP;
+    }
+}
+
+/*********************************************************************
+ * @fn      FLASH_Continue_Mode
+ *
+ * @brief   Read FLASH Continue Mode
+ *
+ * @param   Newstate - new state of the ReadOut Protection(ENABLE or DISABLE).
+ *
+ * @return  none
+ */
+void FLASH_Continue_Mode(FunctionalState NewState)
+{
+    if(NewState)
+    {
+        FLASH->ACTLR |= FLASH_ACTLR_RD_MD;
+    }
+    else
+    {
+        FLASH->ACTLR &= ~FLASH_ACTLR_RD_MD;
     }
 }
 

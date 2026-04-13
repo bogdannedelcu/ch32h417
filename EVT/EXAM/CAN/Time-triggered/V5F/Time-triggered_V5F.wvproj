@@ -1,5 +1,6 @@
 {
 	"version": "1.0",
+	"hasAllParsed": true,
 	"isNormalMRSProject": true,
 	"basic": {
 		"chipInfo": {
@@ -8,7 +9,9 @@
 			"series": "CH32H417",
 			"rtos": "NoneOS",
 			"mcu": "CH32H417QEU",
-			"description": "",
+			"description": "CH32H417 is an interconnected general-purpose microcontroller based on the dual core design of Qingke RISC-V5F and RISC-V3F. CH32H417 integrates USB 3.2 Gen1 controller and transceiver, 100Mbps Ethernet MAC and PHY, SerDes high-speed isolation transceiver, Type-C/PD controller and PHY, providing SD/EMMC controller, universal high-speed interface UHSIF, DVP digital image interface, single wire protocol main interface SWPMI, programmable protocol I/O controller PIOC, flexible storage controller FMC, DFSDM, LTDC, GPHA, DMA controller, multiple timers, 8 serial ports I3C, 4 sets of I2C, 2 sets of QSPI, 4 sets of SPI, 2 sets of I2S, 3 sets of CAN and other peripheral resources, built-in 5M sampling rate dual 12 bit ADC unit, 20M sampling rate 10 bit high-speed HSADC unit, 16 Touchkey, dual DAC unit, 3 sets of operational amplifiers OPA, voltage comparator CMP and other analog resources, supporting 10M/100M Ethernet communication, supporting USB 2.0 and USB 3.0, supporting USB Host host and USB Device device functions, Type-C and PDUSB fast charging functions, supporting SerDes high-speed isolation and long-distance transmission, supporting dual core division of labor to improve network protocol processing efficiency and communication response speed.",
+			"tempratureScope": "",
+			"artifactType": "executable",
 			"link": "WCH-Link",
 			"peripheral_version": "1.4",
 			"calibrateSupport": false,
@@ -18,10 +21,6 @@
 			{
 				"name": "Core",
 				"location": "../../../SRC/Core"
-			},
-			{
-				"name": "Debug",
-				"location": "../../../SRC/Debug"
 			},
 			{
 				"name": "Ld",
@@ -71,7 +70,8 @@
 					]
 				},
 				"downloadMerged": true,
-				"loadMergedBeforeDebug": true
+				"loadMergedBeforeDebug": true,
+				"retainOffsetData": true
 			}
 		}
 	},
@@ -112,6 +112,7 @@
 					"code_generation_without_hardware_floating": false,
 					"use_pipelines": false,
 					"show_caret_indicating_the_column": false,
+					"calling_convention_variant": false,
 					"other_optimization_flags": ""
 				},
 				"warnings": {
@@ -176,7 +177,7 @@
 					},
 					"includes": {
 						"include_paths": [
-							"${project}/Debug",
+							"${project}/Common/Debug",
 							"${project}/Core",
 							"${project}/User",
 							"${project}/Peripheral/inc",
@@ -314,7 +315,8 @@
 					}
 				},
 				"archiver": {
-					"archiver_flags": "-r"
+					"archiver_flags": "-r",
+					"libOutputPrefix": "lib"
 				},
 				"createFlash": {
 					"enabled": true,
@@ -345,6 +347,7 @@
 					"show_totals": false,
 					"other_flags": ""
 				},
+				"configVariables": [],
 				"riscvTargetProcessor": {
 					"architecture": "rv32i",
 					"multiply_extension": true,
@@ -354,6 +357,7 @@
 					"extra_compressed_extension": true,
 					"bit_extension": true,
 					"multiplication_subset_of_the_M_extension": false,
+					"vector_cryptography_extensions": "",
 					"integer_ABI": "ilp32",
 					"floating_point_ABI": "none",
 					"tuning": "default",
@@ -364,15 +368,14 @@
 					"other_target_flags": ""
 				},
 				"component_toolchain": "${WCH:Toolchain:GCC12}",
-				"name": "obj",
-				"configVariables": []
+				"name": "obj"
 			}
 		]
 	},
 	"flashConfig": {
 		"mcutype": "CH32H417",
 		"address": "0x08000000",
-		"target_path": "obj\\Merge.Bin",
+		"target_path": "obj/Merge.Bin",
 		"clkSpeed": "High",
 		"debug_interface_mode": "1-wire serial",
 		"erase": true,
@@ -459,10 +462,8 @@
 			"ATTR_BUILD_BEFORE_LAUNCH_ATTR": 2,
 			"GdbServerAllocateConsole": true,
 			"GdbServerAllocateTelnetConsole": false,
-			"SkipDownloadBeforeDebug": false,
 			"StartGdbCLient": true,
-			"UPDATE_THREADLIST_ON_SUSPEND": false,
-			"DebugInRam": false
+			"UPDATE_THREADLIST_ON_SUSPEND": false
 		}
 	}
 }

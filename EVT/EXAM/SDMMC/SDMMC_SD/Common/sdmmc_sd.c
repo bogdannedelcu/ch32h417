@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : sdmmc_emmc.c
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/10/20
+* Version            : V1.0.3
+* Date               : 2026/04/09
 * Description        : This file contains the headers of the SDMMC.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -20,13 +20,12 @@ SDMMC_TranModeTypeDef SDMMC_TranModeStructure = {0};
 static u8 CardType = SDIO_STD_CAPACITY_SD_CARD_V1_1;
 static u32 CSD_Tab[4], CID_Tab[4], RCA = 0x0;
 #define SDMMC_DMADDR_ALIGN_SIZE            16
-uint8_t     *SDIO_Write_Buf;
-uint8_t     *SDIO_Read_Buf;
+__attribute__((aligned(32)))uint8_t     SDIO_Write_Buf[512];
+__attribute__((aligned(32)))uint8_t     SDIO_Read_Buf[512];
 volatile uint32_t    SDIO_Write_Buf_Len;
 volatile uint32_t    SDIO_Read_Buf_Len;
 volatile uint8_t     SDMMC_ErrorTimes = 0x00;                                          
 SD_CardInfo SDCardInfo;
-uint8_t     *SDIO_Read_Buf;
 
 /*********************************************************************
  * @fn      CmdRespError
@@ -99,7 +98,7 @@ void SD_GPIO_Init()
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_SWPMI, ENABLE);
     SWPMI->OR|=(1<<0); 
 
-    //Data0¡¢Data1¡¢Data2¡¢Data3¡¢clk
+    //Data0ï¿½ï¿½Data1ï¿½ï¿½Data2ï¿½ï¿½Data3ï¿½ï¿½clk
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOC|RCC_HB2Periph_AFIO,ENABLE);
     GPIO_Initure.GPIO_Pin=GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12; 
     GPIO_Initure.GPIO_Mode=GPIO_Mode_AF_PP;

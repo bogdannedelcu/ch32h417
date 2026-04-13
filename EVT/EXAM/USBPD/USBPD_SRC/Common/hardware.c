@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/12/05
+* Version            : V1.0.2
+* Date               : 2026/04/08
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -43,10 +43,9 @@ void TIM1_Init( u16 arr, u16 psc )
  */
 void Hardware(void)
 {
-    #ifdef Core_V3F
 	printf( "PD SRC TEST\r\n" );
     PD_Init( );
-	TIM1_Init( 999, 48-1);
+	TIM1_Init( 999, 120-1);
 	while(1)
     {
         /* Get the calculated timing interval value */
@@ -62,26 +61,6 @@ void Hardware(void)
         }
         PD_Main_Proc( );
     }
-    #else
-	printf( "PD SRC TEST\r\n" );
-    PD_Init( );
-	TIM1_Init( 999, 48-1);
-	while(1)
-    {
-        /* Get the calculated timing interval value */
-        TIM_ITConfig( TIM1, TIM_IT_Update , DISABLE );
-        Tmr_Ms_Dlt = Tim_Ms_Cnt - Tmr_Ms_Cnt_Last;
-        Tmr_Ms_Cnt_Last = Tim_Ms_Cnt;
-        TIM_ITConfig( TIM1, TIM_IT_Update , ENABLE );
-        PD_Ctl.Det_Timer += Tmr_Ms_Dlt;
-        if( PD_Ctl.Det_Timer > 4 )
-        {
-            PD_Ctl.Det_Timer = 0;
-            PD_Det_Proc( );
-        }
-        PD_Main_Proc( );
-    }
-       #endif
 }
 
 #if Func_Run_V3F

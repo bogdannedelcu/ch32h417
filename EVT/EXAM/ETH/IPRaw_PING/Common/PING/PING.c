@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : PING.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2022/06/11
+* Version            : V1.0.1
+* Date               : 2026/03/25
 * Description        : ping related functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -20,7 +20,7 @@ u8 ICMPCnt = 0;
 u8 ICMPSeq = 0;
 u8 ICMPSuc = 0;
 u8 ICMPTmpVal = 0;
-u32 timeCnt;
+vu32 timeCnt;
 extern u8 SocketId;
 /*********************************************************************
  * @fn      InitParameter

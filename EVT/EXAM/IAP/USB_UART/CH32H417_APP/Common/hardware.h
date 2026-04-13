@@ -19,6 +19,7 @@
 
 #include "ch32h417.h"
 #include "debug.h"
+#define DEF_VERSION                 0x0101
 
 	 
 void Hardware(void);

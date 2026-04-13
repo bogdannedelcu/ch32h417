@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/07/28
+ * Version            : V1.0.1
+ * Date               : 2026/04/10
  * Description        : Main program body for V3F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -23,6 +23,7 @@
 
 #include "debug.h"
 #include "hardware.h"
+#include "ch32h417_usbss_device.h"
 
 /*********************************************************************
  * @fn      main
@@ -45,9 +46,11 @@ int main(void)
      external 1.2V power supply has stabilized.*/
     // PWR_VDD12ExternPower();
 
-	Delay_Init();
-	USART_Printf_Init(921600);
+    Delay_Init();
+    USART_Printf_Init(921600);
 
+    Chip = (( DBGMCU_GetCHIPID() >> 4 ) & 0x0F);
+    
 	printf("SystemClk:%d\r\n", SystemClock);
 	printf("V3F SystemCoreClk:%d\r\n", SystemCoreClock);
     printf("UVC_DVP Device Running On USBSS Controller\n");

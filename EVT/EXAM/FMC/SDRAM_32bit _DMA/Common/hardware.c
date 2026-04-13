@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/17
+* Version            : V1.0.2
+* Date               : 2025/04/08
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -46,16 +46,16 @@ volatile uint32_t WriteReadStatus = 0, Index = 0;
 
 typedef struct
 {
-  uint32_t CommandMode;                  /*!< Defines the command issued to the SDRAM device.
+  uint32_t CommandMode;                  /*Defines the command issued to the SDRAM device.
                                               This parameter can be a value of @ref FMC_SDRAM_Command_Mode.          */
 
-  uint32_t CommandTarget;                /*!< Defines which device (1 or 2) the command will be issued to.
+  uint32_t CommandTarget;                /*Defines which device (1 or 2) the command will be issued to.
                                               This parameter can be a value of @ref FMC_SDRAM_Command_Target.        */
 
-  uint32_t AutoRefreshNumber;            /*!< Defines the number of consecutive auto refresh command issued
+  uint32_t AutoRefreshNumber;            /*Defines the number of consecutive auto refresh command issued
                                               in auto refresh mode.
                                               This parameter can be a value between Min_Data = 1 and Max_Data = 16   */
-  uint32_t ModeRegisterDefinition;       /*!< Defines the SDRAM Mode register content                                */
+  uint32_t ModeRegisterDefinition;       /*Defines the SDRAM Mode register content                                */
 }FMC_SDRAM_CommandTypeDef;
 
 /*********************************************************************
@@ -151,16 +151,15 @@ void SDRAM_Send_Cmd(u8 bankx,u8 cmd,u8 refresh,u16 regval)
 void SDRAM_Initialization_Sequence()
 {
 	u32 temp=0;
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_CLK_ENABLE,1,0);
-    Delay_Us(500);                   
-	SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_PALL,1,0);       
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_AUTOREFRESH_MODE,8,0);
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_CLK_ENABLE,1,0);        
+	SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_PALL,1,0);       
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_AUTOREFRESH_MODE,8,0);
 	temp=(u32)SDRAM_MODEREG_BURST_LENGTH_1          |	
               SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |	
-              SDRAM_MODEREG_CAS_LATENCY_2           |	
+              SDRAM_MODEREG_CAS_LATENCY_3          |	
               SDRAM_MODEREG_OPERATING_MODE_STANDARD |   
               SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;     
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_LOAD_MODE,1,temp);   
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_LOAD_MODE,1,temp);   
     
 
 	FMC_SDRAM_SetRefreshCnt(1540);	

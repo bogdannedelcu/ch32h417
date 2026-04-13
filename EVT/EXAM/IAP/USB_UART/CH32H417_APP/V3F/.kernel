@@ -2,7 +2,7 @@
 	"kernelName": "V3F",
 	"isMaster": true,
 	"debugOptions": {
-		"dualCoreDebug": true,
+		"dualCoreDebug": false,
 		"slaveGDBPort": 3334,
 		"masterGDBPort": 3333
 	},
@@ -18,7 +18,8 @@
 				}
 			]
 		},
-		"downloadMerged": true,
-		"loadMergedBeforeDebug": true
+		"downloadMerged": false,
+		"loadMergedBeforeDebug": true,
+		"retainOffsetData": false
 	}
 }

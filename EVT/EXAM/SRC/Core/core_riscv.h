@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : core_riscv.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/15
+* Version            : V1.0.2
+* Date               : 2026/03/18
 * Description        : RISC-V V3F_V5F Core Peripheral Access Layer Header File for CH32H417_416_415
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -378,7 +378,7 @@ __attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetAllocateIRQ
  */
 __attribute__( ( always_inline ) ) RV_STATIC_INLINE void NVIC_SetAllocateIRQ(IRQn_Type IRQn, uint8_t Core_ID)
 {
-  if(IRQn > 31)  return ;
+  if(IRQn > 31)
   NVIC->IALLOCR[(uint32_t)(IRQn)] = Core_ID;
 }
 
@@ -561,57 +561,57 @@ __attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetCurrentCore
  *
  * @brief   Enables or disables the event wake up.
  *
- * @param   IRQn -Interrupt Numbers ( <=31 )
+ * @param   EVTn - Event Numbers ( <=31 )
  *          NewState - DISABLE or ENABLE
  *
  * @return  none
  */
-__attribute__( ( always_inline ) ) RV_STATIC_INLINE void NVIC_EventWakeUPCmd(IRQn_Type IRQn, FunctionalState NewState)
+__attribute__( ( always_inline ) ) RV_STATIC_INLINE void NVIC_EventWakeUPCmd(uint32_t EVTn, FunctionalState NewState)
 {
-  if(IRQn > 31)  return ;
+  if(EVTn > 31)  return ;
 
   if (NewState != DISABLE)
   {
-    NVIC->EENR |= IRQn;
+    NVIC->EENR |= 1 << EVTn;
   }
   else
   {
-    NVIC->EENR &= (~IRQn);
+    NVIC->EENR &= (~(1 << EVTn));
   }
 }
 
 /*********************************************************************
- * @fn      NVIC_ClearPendingWakeuUpEvent
+ * @fn      NVIC_ClearPendingWakeUpEvent
  *
  * @brief   Clear wake up event pending 
  *
- * @param   IRQn - Interrupt Numbers (from 8 to 31)
+ * @param   EVTn - Event Numbers (from 8 to 31)
  *
  * @return  none
  */
-__attribute__( ( always_inline ) ) RV_STATIC_INLINE void NVIC_ClearPendingWakeuUpEvent(IRQn_Type IRQn)
+__attribute__( ( always_inline ) ) RV_STATIC_INLINE void NVIC_ClearPendingWakeUpEvent(uint32_t EVTn)
 {
-  if((IRQn > 31) && (IRQn < 8))  return ;
-  NVIC->EPR = IRQn;
+  if((EVTn > 31) || (EVTn < 8))  return ;
+  NVIC->EPR = 1 << EVTn;
 }
 
 /*********************************************************************
- * @fn      NVIC_GetPendingWakeuUpEvent
+ * @fn      NVIC_GetPendingWakeUpEvent
  *
  * @brief   Get wake up event pending 
  *
- * @param   IRQn - Interrupt Numbers( <=31)
+ * @param   IRQn - Event Numbers( <=31)
  *
  * @return  1 - Event pending
  *          0 - Event no pending
  */
-__attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetPendingWakeuUpEvent(IRQn_Type IRQn)
+__attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetPendingWakeUpEvent(uint32_t EVTn)
 {
-  return((uint32_t)((NVIC->EPR & (1 << IRQn))?1:0));
+  return((uint32_t)((NVIC->EPR & (1 << EVTn))?1:0));
 }
 
 /*********************************************************************
- * @fn      NVIC_GetWakeuUpEvent
+ * @fn      NVIC_GetWakeUpEvent
  *
  * @brief   Get wake up event 
  *
@@ -620,9 +620,9 @@ __attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetPendingWake
  * @return  1 - The event wake up core 
  *          0 - The event do not wake up core 
  */
-__attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetWakeuUpEvent(IRQn_Type IRQn)
+__attribute__( ( always_inline ) ) RV_STATIC_INLINE uint32_t NVIC_GetWakeUpEvent(uint32_t EVTn)
 {
-  return((uint32_t)((NVIC->EWUPR & (1 << IRQn))?1:0));
+  return((uint32_t)((NVIC->EWUPR & (1 << EVTn))?1:0));
 }
 
 /*********************************************************************
@@ -821,6 +821,10 @@ __attribute__( ( always_inline ) ) RV_STATIC_INLINE int32_t __AMOXOR_W(volatile 
             "=r"(result), "+A"(*addr) : "r"(value) : "memory");
     return *addr;
 }
+
+#define NVIC_ClearPendingWakeuUpEvent   NVIC_ClearPendingWakeUpEvent
+#define NVIC_GetPendingWakeuUpEvent     NVIC_GetPendingWakeUpEvent
+#define NVIC_GetWakeuUpEvent            NVIC_GetWakeUpEvent
 
 /* Core_Exported_Functions */  
 extern uint32_t __get_FFLAGS(void);

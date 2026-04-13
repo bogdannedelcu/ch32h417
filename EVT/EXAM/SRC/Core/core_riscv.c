@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : core_riscv.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/15
+* Version            : V1.0.2
+* Date               : 2026/02/02
 * Description        : RISC-V V3F_V5F Core Peripheral Access Layer Source File for CH32H417_416_415
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -400,7 +400,7 @@ uint32_t __get_SP(void)
  */
 void __set_MCOUNT_INHIBIT(uint32_t value)
 {
-  __ASM volatile ("csrw mucounteren, %0" : : "r" (value) );
+  __ASM volatile ("csrw mcounteren, %0" : : "r" (value) );
 }
 
 /*********************************************************************
@@ -414,7 +414,7 @@ uint32_t __get_MCOUNT_INHIBIT(void)
 {
   uint32_t result;
 
-  __ASM volatile ( "csrr %0," "mucounteren" : "=r"(result) : );
+  __ASM volatile ( "csrr %0," "mcounteren" : "=r"(result) : );
   return (result);
 }
 

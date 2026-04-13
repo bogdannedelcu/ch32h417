@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_rcc.c
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/10/21
+* Version            : V1.0.3
+* Date               : 2026/03/17
 * Description        : This file provides all the RCC firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -303,47 +303,6 @@ void RCC_HCLKSourceDivConfig(uint32_t RCC_SYSCLK, uint32_t RCC_SYSCLKFPRE)
 }
 
 /*********************************************************************
- * @fn      RCC_TIMClockSourDivConfig
- *
- * @brief   TIMx - where x can be 1 to 10 to select the TIM peripheral.
- *          TIM_Clock_Divx -  defines the TIM clock divider
- *           TIM_Clock_Div2 - TIM_Clock = HCLK/2
- *           TIM_Clock_Div4 - TIM_Clock = HCLK/4
- *           TIM_Clock_Div8 - TIM_Clock = HCLK/8
- *
- * @return  none
- */
-void RCC_TIMClockSourDivConfig(TIM_TypeDef * TIMx, uint32_t TIM_Clock_Divx)
-{
-   if((TIMx == TIM1) || (TIMx == TIM8) || (TIMx == TIM9) || (TIMx == TIM10))
-   {
-       RCC->CFGR0 &= ~RCC_PPRE2;
-       RCC->CFGR0 |= TIM_Clock_Divx << 11;
-   }
-   else
-   {
-       RCC->CFGR0 &= ~RCC_PPRE1;
-       RCC->CFGR0 |= TIM_Clock_Divx << 8;
-   }
-}
-
-/*********************************************************************
- * @fn      RCC_LPTIMClockSourDivConfig
- *
- * @brief   LPTIM_Clock_Divx -  defines the LPTIM clock divider
- *           LPTIM_Clock_Div2 - LPTIM_Clock = HCLK/2
- *           LPTIM_Clock_Div4 - LPTIM_Clock = HCLK/4
- *           LPTIM_Clock_Div8 - LPTIM_Clock = HCLK/8
- *
- * @return  none
- */
-void RCC_LPTIMClockSourDivConfig(uint32_t LPTIM_Clock_Divx)
-{
-    RCC->CFGR0 &= ~RCC_PPRE1;
-    RCC->CFGR0 |= LPTIM_Clock_Divx << 8;
-}
-
-/*********************************************************************
  * @fn      RCC_ITConfig
  *
  * @brief   Enables or disables the specified RCC interrupts.
@@ -384,17 +343,17 @@ void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState)
  *          RCC_USBHS_Div7 - ADC clock = USBHS_PLL_CLK/7.
  *          RCC_USBHS_Div8 - ADC clock = USBHS_PLL_CLK/8.
  *          RCC_USBHS_Div9 - ADC clock = USBHS_PLL_CLK/9.
- *          RCC_USBHS_Div10 - ADC clock = USBHS_PLL_CLK/10.
- *          RCC_USBHS_Div11 - ADC clock = USBHS_PLL_CLK/11.
- *          RCC_USBHS_Div12 - ADC clock = USBHS_PLL_CLK/12.
+ *          RCC_USBHS_Div10 - ADC clock = USBHS_PLL_CLK/10. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div11 - ADC clock = USBHS_PLL_CLK/11. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div12 - ADC clock = USBHS_PLL_CLK/12. (When using TIM 1,8,9,10 ，this parameter cannot be used)
  *          RCC_USBHS_Div13 - ADC clock = USBHS_PLL_CLK/13.
  *          RCC_USBHS_Div14 - ADC clock = USBHS_PLL_CLK/14.
  *          RCC_USBHS_Div15 - ADC clock = USBHS_PLL_CLK/15.
  *          RCC_USBHS_Div16 - ADC clock = USBHS_PLL_CLK/16.
  *          RCC_USBHS_Div17 - ADC clock = USBHS_PLL_CLK/17.
- *          RCC_USBHS_Div18 - ADC clock = USBHS_PLL_CLK/18.
- *          RCC_USBHS_Div19 - ADC clock = USBHS_PLL_CLK/19.
- *          RCC_USBHS_Div20 - ADC clock = USBHS_PLL_CLK/20.
+ *          RCC_USBHS_Div18 - ADC clock = USBHS_PLL_CLK/18. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div19 - ADC clock = USBHS_PLL_CLK/19. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div20 - ADC clock = USBHS_PLL_CLK/20. (When using TIM 1,8,9,10 ，this parameter cannot be used)
  *          RCC_USBHS_Div21 - ADC clock = USBHS_PLL_CLK/21.
  *          RCC_USBHS_Div22 - ADC clock = USBHS_PLL_CLK/22.
  *          RCC_USBHS_Div23 - ADC clock = USBHS_PLL_CLK/23.
@@ -408,9 +367,9 @@ void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState)
  *          RCC_USBHS_Div31 - ADC clock = USBHS_PLL_CLK/31.
  *          RCC_USBHS_Div32 - ADC clock = USBHS_PLL_CLK/32.
  *          RCC_USBHS_Div33 - ADC clock = USBHS_PLL_CLK/33.
- *          RCC_USBHS_Div34 - ADC clock = USBHS_PLL_CLK/34.
- *          RCC_USBHS_Div35 - ADC clock = USBHS_PLL_CLK/35.
- *          RCC_USBHS_Div36 - ADC clock = USBHS_PLL_CLK/36.
+ *          RCC_USBHS_Div34 - ADC clock = USBHS_PLL_CLK/34. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div35 - ADC clock = USBHS_PLL_CLK/35. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *          RCC_USBHS_Div36 - ADC clock = USBHS_PLL_CLK/36. (When using TIM 1,8,9,10 ，this parameter cannot be used)
  *
  * @return  none
  */
@@ -433,9 +392,9 @@ void RCC_ADCUSBHSPLLCLKAsSourceConfig(uint32_t RCC_PPRE)
  *        the HCLK clock .
  *            RCC_PPRE2_DIV0 - HCLK.
  *            RCC_PPRE2_DIV2 - HCLK/2.
- *            RCC_PPRE2_DIV4 - HCLK/4.
- *            RCC_PPRE2_DIV8 - HCLK/8.
- *            RCC_PPRE2_DIV16 - HCLK/16.
+ *            RCC_PPRE2_DIV4 - HCLK/4. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *            RCC_PPRE2_DIV8 - HCLK/8. (When using TIM 1,8,9,10 ，this parameter cannot be used)
+ *            RCC_PPRE2_DIV16 - HCLK/16. (When using TIM 1,8,9,10 ，this parameter cannot be used)
  *          RCC_ADC_DIV - the ADC clock divider.
  *            RCC_HCLK_ADCPRE_DIV2 - ADC clock = HCLK/PPRE2_DIV/2.
  *            RCC_HCLK_ADCPRE_DIV4 - ADC clock = HCLK/PPRE2_DIV/4.

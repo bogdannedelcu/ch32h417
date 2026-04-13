@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : iap.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/01/09
+ * Version            : V1.0.2
+ * Date               : 2026/03/27
  * Description        : IAP
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -13,7 +13,7 @@
 #include "string.h"
 #include "flash.h"
 #include "core_riscv.h"
-
+#include "usb_inf.h"
 /******************************************************************************/
 
 iapfun jump2app;
@@ -21,16 +21,16 @@ vu32 Program_addr = FLASH_Base;
 vu32 Verify_addr = FLASH_Base;
 vu32 User_APP_Addr_offset = 0x6000;
 vu8 Verify_Star_flag = 0;
-u8 Fast_Program_Buf[1024*10];
+vu8 Fast_Program_Buf[1024*10];
 vu32 CodeLen = 0;
 vu8 End_Flag = 0;
-u8 EP2_Rx_Buffer[USBD_DATA_SIZE+4];
-#define  isp_cmd_t   ((isp_cmd  *)EP2_Rx_Buffer)
-#define Size_256B                  0x100
-#define Size_4KB                   0x1000
-#define Size_8KB                   0x2000
+u8 IAP_Deal_Buf[USBD_DATA_SIZE+4];
+#define  isp_cmd_t   ((isp_cmd  *)IAP_Deal_Buf)
+#define  Size_256B         0x100
+#define  Size_4KB          0x1000
+#define  Size_8KB          0x2000
 
-vu32 Flash_Erase_Page_Size =Size_8KB;
+vu32 Flash_Erase_Page_Size = Size_8KB;
 /*********************************************************************
  * @fn      RecData_Deal
  *
@@ -42,25 +42,9 @@ vu32 Flash_Erase_Page_Size =Size_8KB;
  */
 u8 RecData_Deal(void)
 {
-    uint32_t  s;
-    
-    switch ( isp_cmd_t->other.buf[0]) {
-    case CMD_IAP_ERASE:
-        s = ERR_SUCCESS;
-        break;
-
-    case CMD_IAP_PROM:
-        s = ERR_ERROR;
-        break;
-
-    case CMD_IAP_VERIFY:
-        s = ERR_ERROR;
-        break;
-
-    case CMD_IAP_END:
-        s = ERR_ERROR;
-        break;
-
+    u8 s;
+    switch ( isp_cmd_t->other.buf[0]) 
+    {
     case CMD_JUMP_IAP:
         FLASH_Unlock_Fast();
         FLASH_ErasePage(CalAddr & (~(Flash_Erase_Page_Size-1)));
@@ -88,25 +72,8 @@ u8 RecData_Deal(void)
  */
 u8 UART_RecData_Deal(void)
 {
-    uint32_t  s;
-
+    u8 s;
     switch ( isp_cmd_t->UART.Cmd) {
-    case CMD_IAP_ERASE:
-        s = ERR_SUCCESS;
-        break;
-
-    case CMD_IAP_PROM:
-        s = ERR_ERROR;
-        break;
-
-    case CMD_IAP_VERIFY:
-        s = ERR_ERROR;
-        break;
-
-    case CMD_IAP_END:
-        s = ERR_ERROR;
-        break;
-
     case CMD_JUMP_IAP:
         FLASH_Unlock_Fast();
         FLASH_ErasePage(CalAddr & (~(Flash_Erase_Page_Size-1)));

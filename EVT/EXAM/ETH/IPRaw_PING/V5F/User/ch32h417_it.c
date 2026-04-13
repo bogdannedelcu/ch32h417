@@ -17,6 +17,7 @@ void HardFault_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void TIM2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void ETH_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void EXTI15_8_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+extern vu32 timeCnt;
 /*********************************************************************
  * @fn      NMI_Handler
  *
@@ -60,6 +61,7 @@ void HardFault_Handler(void)
  */
 void TIM2_IRQHandler(void)
 {
+    timeCnt++;
     WCHNET_TimeIsr(WCHNETTIMERPERIOD);
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 }

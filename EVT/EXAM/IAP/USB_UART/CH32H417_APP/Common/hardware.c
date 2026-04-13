@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/12/05
+* Version            : V1.0.3
+* Date               : 2026/04/03
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -15,15 +15,17 @@
  * and you can choose the command method to jump to the IAP .
  * Key  parameters: CalAddr - address in flash(same in IAP), note that this address needs to be unused.
  *                  CheckNum - The value of 'CalAddr' that needs to be modified.
- * Tips :the routine need IAP software version 1.50 or later.
+ * Tips :the routine need IAP software version 1.60 or later.
+ *       DEF_USB_APP_MODE - USB Vendor or HID mode
  */
 
 #include "hardware.h"
-#include "debug.h"
 #include "ch32h417_usbfs_device.h"
 #include "ch32h417_usbhs_device.h"
 #include "ch32h417_gpio.h"
 #include "iap.h"
+#include "usb_inf.h"
+extern vu8 End_Flag;
 extern vu32 Flash_Erase_Page_Size;
 #define Size_256B                  0x100
 #define Size_4KB                   0x1000
@@ -38,8 +40,7 @@ extern vu32 Flash_Erase_Page_Size;
 void APP_2_IAP(void)
 {
     NVIC_SystemReset();
-    while(1){
-    }
+    while(1);
 }
 
 /*********************************************************************
@@ -96,10 +97,7 @@ void Hardware(void)
     //enable usart and usb device
     USART1_CFG(460800);
     /* USB20 device init */
-    USBHS_RCC_Init(ENABLE );
-    USBHS_Device_Init( ENABLE );
-    
-    USBFS_Init( );
+    USB_Init(ENABLE);
     USART1_IT_CFG();
 
 	while (1)

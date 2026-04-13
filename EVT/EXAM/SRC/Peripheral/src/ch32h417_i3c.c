@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_i3c.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/10/21
+* Version            : V1.0.2
+* Date               : 2026/04/02
 * Description        : This file provides all the I3C firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -44,6 +44,7 @@ void I3C_Ctrl_Init(I3C_Ctrl_BusTypeDef *I3C_InitStruct)
 
     I3C->CFGR |= I3C_CFGR_CRINIT;
     I3C->RESET &= ~I3C_RESET_HST_SIE_RST;
+    I3C->RESET |= 0x1000;
 
     waveform_value = ((uint32_t)I3C_InitStruct->SCLPPLowDuration |
                       ((uint32_t)I3C_InitStruct->SCLI3CHighDuration << 8) |
@@ -75,6 +76,7 @@ void I3C_Tgt_Init(uint8_t BusAvailableDuration)
     I3C->CFGR = 0;
 
     I3C->RESET &= ~I3C_RESET_TGT_SIE_RST;
+    I3C->RESET |= 0x1000;
     I3C->TIMINGR1 &= I3C_TIMINGR1_AVAL;
     I3C->TIMINGR1 |= (uint32_t)BusAvailableDuration;
 }
@@ -168,7 +170,7 @@ void I3C_Tgt_Config(I3C_TgtConfTypeDef *I3C_TgtConf)
  *
  * @brief   Enables or disables the I3C interface.
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -190,7 +192,7 @@ void I3C_Cmd(FunctionalState NewState)
  * @brief   Enables or disables An arbitration header (7'h7E) is sent after 
  *        Start in case of legacy I2C or I3C private transfers.
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -212,7 +214,7 @@ void I3C_ArbitrationHeaderCmd(FunctionalState NewState)
  * @brief   Enables or disables Hot Join Request is Acked. Current frame 
  *        on the bus is continued An Hot Join interrupt is sent through HJF flag..       
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -233,7 +235,7 @@ void I3C_HJAckCmd(FunctionalState NewState)
  *
  * @brief   Enables or disables DMA FIFO reception requests.      
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -254,7 +256,7 @@ void I3C_DMAReq_RXCmd(FunctionalState NewState)
  *
  * @brief   Enables or disables DMA FIFO transmission requests.      
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -275,7 +277,7 @@ void I3C_DMAReq_TXCmd(FunctionalState NewState)
  *
  * @brief   Enables or disables DMA FIFO Status requests.      
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -296,7 +298,7 @@ void I3C_DMAReq_StatusCmd(FunctionalState NewState)
  *
  * @brief   Enables or disables DMA FIFO Control word transfer requests.     
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -318,7 +320,7 @@ void I3C_DMAReq_ControlCmd(FunctionalState NewState)
  * @brief   Enables or disables An Exit Pattern is sent after header
  *        (MTYPE = header) to program an escalation fault.
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -369,7 +371,7 @@ void I3C_TxPreloadConfig(uint16_t TxDataCount)
  *
  * @brief   Enables or disables Target mode reset.
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -378,10 +380,12 @@ void I3C_TARGET_ResetCmd(FunctionalState NewState)
     if (NewState != DISABLE)
     {
         I3C->RESET |= I3C_RESET_TGT_SIE_RST;
+        I3C->RESET |= 0x1000;
     }
     else
     {
         I3C->RESET &= ~I3C_RESET_TGT_SIE_RST;
+        I3C->RESET |= 0x1000;
     }
 }
 
@@ -390,7 +394,7 @@ void I3C_TARGET_ResetCmd(FunctionalState NewState)
  *
  * @brief   Enables or disables Controller mode reset.
  *
- * @param   NewState - new state of the DFSDM interface(ENABLE or DISABLE).
+ * @param   NewState - new state of the I3C interface(ENABLE or DISABLE).
  *
  * @return  none
  */
@@ -399,10 +403,12 @@ void I3C_CONTROLLER_ResetCmd(FunctionalState NewState)
     if (NewState != DISABLE)
     {
         I3C->RESET |= I3C_RESET_HST_SIE_RST;
+        I3C->RESET |= 0x1000;
     }
     else
     {
         I3C->RESET &= ~I3C_RESET_HST_SIE_RST;
+        I3C->RESET |= 0x1000;
     }
 }
 
@@ -812,13 +818,13 @@ uint8_t I3C_GetTargetAbortPrivateRead(void)
 }
 
 /*********************************************************************
- * @fn      I3C_GetGetXferDataCount
+ * @fn      I3C_GetXferDataCount
  *
  * @brief   Get the number of data during a Transfer.
  * 
  * @return  The number of data during a Transfer.
  */
-uint16_t I3C_GetGetXferDataCount(void)
+uint16_t I3C_GetXferDataCount(void)
 {
     return ((uint16_t)(I3C->STATR));
 }
@@ -836,13 +842,13 @@ uint8_t I3C_GetMessageIdentifier(void)
 }
 
 /*********************************************************************
- * @fn      I3C_GetGetIBITargetAddr
+ * @fn      I3C_GetIBITargetAddr
  *
  * @brief   Get the target address received during accepted IBI or Controller-role request.
  * 
  * @return  The target address received during accepted IBI or Controller-role request.
  */
-uint8_t I3C_GetGetIBITargetAddr(void)
+uint8_t I3C_GetIBITargetAddr(void)
 {
     return ((uint8_t)((I3C->RMR & I3C_RMR_RADD) >> 17));
 }
@@ -860,13 +866,13 @@ uint8_t I3C_GetReceiveCommandCode(void)
 }
 
 /*********************************************************************
- * @fn      I3C_GetGetNbIBIAddData
+ * @fn      I3C_GetNbIBIAddData
  *
  * @brief   Get the number of data bytes received when reading IBI data (controller mode).
  * 
  * @return  The number of data bytes received when reading IBI data
  */
-uint8_t I3C_GetGetNbIBIAddData(void)
+uint8_t I3C_GetNbIBIAddData(void)
 {
     return ((uint8_t)(I3C->RMR & I3C_RMR_IBIRDCNT));
 }
@@ -880,7 +886,7 @@ uint8_t I3C_GetGetNbIBIAddData(void)
  *          1 - reset action partial.
  *          2 - reset action full.
  */
-uint8_t I3C_GetGetResetAction(void)
+uint8_t I3C_GetResetAction(void)
 {
     return ((uint8_t)((I3C->DEVR0 & 0x00C00000) >> 22));
 }

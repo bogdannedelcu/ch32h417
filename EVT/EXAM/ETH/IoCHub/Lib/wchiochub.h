@@ -149,19 +149,6 @@ typedef enum CHIP_TYPE
 	E_CH32V20x_D6
 }CHIP_TYPE;
 
-#ifdef CH32V30x_D8C
-#define CHIPTYPE 	E_CH32V30x_D8C
-#endif
-#ifdef CH32V30x_D8
-#define CHIPTYPE 	E_CH32V30x_D8
-#endif
-#ifdef CH32V20x_D8W
-#define CHIPTYPE 	E_CH32V20x_D8W
-#endif
-#ifdef CH32V20x_D8
-#define CHIPTYPE 	E_CH32V20x_D8
-#endif
-
 /* Parameter configuration structure */
 typedef struct TAG_IOCHUB_CONFIG
 {
