@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_rcc.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/03/17
 * Description        : This file provides all the RCC firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -160,16 +160,6 @@ typedef struct
 #define RCC_SYSCLKFPRE_Div1              ((uint32_t)0x00000000)
 #define RCC_SYSCLKFPRE_Div2              ((uint32_t)0x00010000)
 #define RCC_SYSCLKFPRE_Div4              ((uint32_t)0x00020000)
-
-/* TIM_Clock_division_factor */
-#define TIM_Clock_Div2                   ((uint32_t)0x00000005)
-#define TIM_Clock_Div4                   ((uint32_t)0x00000006)
-#define TIM_Clock_Div8                   ((uint32_t)0x00000007)
-
-/* LPTIM_Clock_division_factor */
-#define LPTIM_Clock_Div2                 ((uint32_t)0x00000005)
-#define LPTIM_Clock_Div4                 ((uint32_t)0x00000006)
-#define LPTIM_Clock_Div8                 ((uint32_t)0x00000007)
 
 /* RCC_Interrupt_source */
 #define RCC_IT_LSIRDY                    ((uint8_t)0x01)
@@ -647,8 +637,6 @@ void RCC_PLLCmd(FunctionalState NewState);
 void RCC_SYSCLKConfig(uint32_t RCC_SYSCLKSource);
 uint8_t RCC_GetSYSCLKSource(void);
 void RCC_HCLKSourceDivConfig(uint32_t RCC_SYSCLK, uint32_t RCC_SYSCLKFPRE);
-void RCC_TIMClockSourDivConfig(TIM_TypeDef * Tim, uint32_t TIM_Clock_Divx);
-void RCC_LPTIMClockSourDivConfig(uint32_t LPTIM_Clock_Divx);
 void RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState);
 void RCC_ADCUSBHSPLLCLKAsSourceConfig(uint32_t RCC_PPRE);
 void RCC_ADCHCLKCLKAsSourceConfig(uint32_t RCC_PPRE2_DIV, uint32_t RCC_ADC_DIV);

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32h417_usbhs_device.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/07/31
+ * Version            : V1.0.1
+ * Date               : 2026/04/10
  * Description        : This file provides all the USBHS firmware functions.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -224,7 +224,7 @@ void USBHS_IRQHandler(void)
             {
             case DEF_UEP0:
                 USBHSD->UEP0_RX_CTRL &= ~USBHS_UEP_R_DONE;
-                if(USBHSD->UEP0_RX_CTRL & USBHS_UEP_R_SETUP_IS)
+                if((USBHSD->UEP0_RX_CTRL & USBHS_UEP_R_SETUP_IS) && !(USBHSD->UEP0_RX_CTRL & USBHS_UEP_R_DONE))
                 {
                     /* Store All Setup Values */
                     USBHS_SetupReqType = pUSBHS_SetupReqPak->bRequestType;

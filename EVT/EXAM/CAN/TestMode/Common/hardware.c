@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : hardware.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/09/16
+ * Version            : V1.0.2
+ * Date               : 2026/03/25
  * Description        : This document demonstrates how to perform tests using loopback mode.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -462,7 +462,7 @@ void Hardware(void)
     CAN_InitSturcture.CAN_BS1 = CAN_BS1_6tq;
     CAN_InitSturcture.CAN_BS2 = CAN_BS2_5tq;
     CAN_InitSturcture.CAN_Prescaler = 16;
-    CAN_Mode_Init(CAN1, CANRXPinTable, CANTXPinTable, &CAN_InitSturcture);
+    CAN_Mode_Init(CAN1, CANRXPinTable + 1, CANTXPinTable + 1, &CAN_InitSturcture);
     CAN_Mode_Init(CAN2, CANRXPinTable + 5, CANTXPinTable + 5, &CAN_InitSturcture);
     CAN_Mode_Init(CAN3, CANRXPinTable + 7, CANTXPinTable + 7, &CAN_InitSturcture);
 #ifdef USE_INTERRUPT_TO_REC

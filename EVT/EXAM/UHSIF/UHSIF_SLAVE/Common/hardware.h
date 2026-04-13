@@ -20,7 +20,6 @@
 #include "ch32h417.h"
 #include "debug.h"
 
-
 #define DEF_TX_CHAIN_TIMEOUT              1000000
 
 #define DEF_UHSIF_TXBUF_CNT               8

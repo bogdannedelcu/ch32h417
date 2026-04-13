@@ -264,14 +264,17 @@ void Uart1Action (u8 *buf, u8 len) {
 	switch (i) 
 	{
 		case 0: //IOCAT+SDKVER
+		{
 			Uart1Write("IOCAT+SDKVER_OK\r\n");
-			 WCHIOCHUB_GetSDKVer(IocHub_VER);
+			WCHIOCHUB_GetSDKVer(IocHub_VER);
 			Uart1Write("SDKVER: V%u.%u.%u\r\n", IocHub_VER[0], IocHub_VER[1], IocHub_VER[2]);
+		}
 			break;
 		case 1: //IOCAT+NATTYPE
+		{
 			Uart1Write("IOCAT+NATTYPE_OK\r\n");
-			 printf("NATTYPE: %x\r\n", WCHIOCHUB_GetNATType());
-
+			printf("NATTYPE: %x\r\n", WCHIOCHUB_GetNATType());
+		}
 			break;
 		case 2: //IOCAT+TRANSTYPE=0
 		{
@@ -281,24 +284,26 @@ void Uart1Action (u8 *buf, u8 len) {
 		}
 			break;
 		case 3: //IOCAT+START
+		{
 			Uart1Write("IOCAT+START_OK\r\n");
-			{
-				if(!WCHIOCHUB_GetDeviceSerState())
-				WCHIOCHUB_Start(wchIochubSerIp,
-								wchIochubSerPort,
-								wchIochubScrPort,
-								localDeviceID,
-								logindeviceSecret,
-								0x00,
-								0x01,
-								WCHIOCHUB_regCallback); /*启动服务*/
-			}
+			
+			if(!WCHIOCHUB_GetDeviceSerState())
+			WCHIOCHUB_Start(wchIochubSerIp,
+							wchIochubSerPort,
+							wchIochubScrPort,
+							localDeviceID,
+							logindeviceSecret,
+							0x00,
+							0x01,
+							WCHIOCHUB_regCallback); /*启动服务*/
+		}
 			break;
 		case 4: //IOCAT+STOP
+		{
 			Uart1Write("IOCAT+STOP_OK\r\n");
 			if(WCHIOCHUB_GetDeviceSerState())
 			WCHIOCHUB_Stop();
-
+		}
 			break;
 		case 5: //IOCAT+LOCALID
 		{

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/01/15
+* Version            : V1.0.2
+* Date               : 2026/03/25
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -172,6 +172,7 @@ void Hardware(void)
     u8 i;
     printf("IPRaw_PING Test\r\n"); 
     printf("SystemClk:%d\r\n", SystemCoreClock);
+    printf("HCLKClock:%d\r\n", HCLKClock);
     printf("ChipID:%08x\r\n", DBGMCU_GetCHIPID());
     printf("net version:%x\n", WCHNET_GetVer());
     if (WCHNET_LIB_VER != WCHNET_GetVer()) {

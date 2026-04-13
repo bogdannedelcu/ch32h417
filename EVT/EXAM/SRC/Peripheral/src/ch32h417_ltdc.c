@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_ltdc.c
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/11/13
+* Version            : V1.0.3
+* Date               : 2026/04/02
 * Description        : This file provides all the LTDC firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -126,46 +126,6 @@ void LTDC_Cmd(FunctionalState NewState)
     {
         LTDC->GCR &= ~(uint32_t)LTDC_GCR_LTDCEN;
     }
-}
-
-/*********************************************************************
- * @fn      LTDC_GetRGBWidth
- *
- * @brief   Get the dither RGB width.
- * 
- * @param   LTDC_RGB_InitStruct - pointer to a LTDC_RGBTypeDef structure that contains
- *        the Dither RGB width.
- * 
- * @return  none
- */
-LTDC_RGBTypeDef LTDC_GetRGBWidth(void)
-{
-    LTDC_RGBTypeDef LTDC_RGB_InitStruct = {0};
-
-    LTDC->GCR &= (uint32_t)GCR_MASK;
-
-    LTDC_RGB_InitStruct.LTDC_BlueWidth  = (uint32_t)((LTDC->GCR >> 4) & 0x7);
-    LTDC_RGB_InitStruct.LTDC_GreenWidth = (uint32_t)((LTDC->GCR >> 8) & 0x7);
-    LTDC_RGB_InitStruct.LTDC_RedWidth   = (uint32_t)((LTDC->GCR >> 12) & 0x7);
-
-    return LTDC_RGB_InitStruct;
-}
-
-/*********************************************************************
- * @fn      LTDC_RGBStructInit
- *
- * @brief   Fills each LTDC_RGBStruct member with its default value.
- * 
- * @param   LTDC_RGB_InitStruct - pointer to a LTDC_RGBTypeDef structure which will
- *        be initialized.
- * 
- * @return  none
- */
-void LTDC_RGBStructInit(LTDC_RGBTypeDef* LTDC_RGB_InitStruct)
-{
-    LTDC_RGB_InitStruct->LTDC_BlueWidth  = 0x02;
-    LTDC_RGB_InitStruct->LTDC_GreenWidth = 0x02;
-    LTDC_RGB_InitStruct->LTDC_RedWidth   = 0x02;
 }
 
 /*********************************************************************
@@ -319,16 +279,14 @@ void LTDC_LayerCmd(LTDC_Layer_TypeDef* LTDC_Layerx, FunctionalState NewState)
  * 
  * @return  none
  */
-LTDC_PosTypeDef LTDC_GetPosStatus(void)
+LTDC_PosTypeDef *LTDC_GetPosStatus(LTDC_PosTypeDef *LTDC_Pos_Struct)
 {
-    LTDC_PosTypeDef LTDC_Pos_InitStruct = {0};
-
     LTDC->CPSR &= ~(LTDC_CPSR_CYPOS | LTDC_CPSR_CXPOS);
 
-    LTDC_Pos_InitStruct.LTDC_POSX = (uint32_t)(LTDC->CPSR >> 16);
-    LTDC_Pos_InitStruct.LTDC_POSY = (uint32_t)(LTDC->CPSR & 0xFFFF);
+    LTDC_Pos_Struct->LTDC_POSX = (uint32_t)(LTDC->CPSR >> 16);
+    LTDC_Pos_Struct->LTDC_POSY = (uint32_t)(LTDC->CPSR & 0xFFFF);
 
-    return LTDC_Pos_InitStruct;
+    return LTDC_Pos_Struct;
 }
 
 /*********************************************************************

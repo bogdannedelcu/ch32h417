@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32h417_usbhs_device.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/05/26
+ * Version            : V1.0.1
+ * Date               : 2026/04/10
  * Description        : This file provides all the USBHS firmware functions.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -885,7 +885,7 @@ void USBHS_IRQHandler(void)
             USBHS_DevSleepStatus &= ~0x02;
         }
     }
-    else if(intflag & USBHS_UDIF_BUS_RST)
+    else if( intflag & USBHS_UDIF_BUS_RST )
     {
         /* usb reset interrupt processing */
         USBHS_DevConfig = 0;

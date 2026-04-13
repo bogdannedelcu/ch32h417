@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : SoftUART.h
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/09/16
+ * Version            : V1.0.2
+ * Date               : 2026/04/09
  * Description        : Simulate UART with software
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -23,11 +23,11 @@
 
 #if !USER_SOFTUART_COSTOM
 #define DEFAULT_RXTIM TIM1
-#define DEFAULT_RXPORT GPIOD
-#define DEFAULT_RXPIN GPIO_Pin_2
-#define DEFAULT_TXTIM TIM2
-#define DEFAULT_TXPORT GPIOD
-#define DEFAULT_TXPIN GPIO_Pin_4
+#define DEFAULT_RXPORT GPIOE
+#define DEFAULT_RXPIN GPIO_Pin_4
+#define DEFAULT_TXTIM TIM8
+#define DEFAULT_TXPORT GPIOE
+#define DEFAULT_TXPIN GPIO_Pin_3
 #define DEFAULT_TXDMA DMA1_Channel2
 #define DEFAULT_BAUDRATE 9600
 #define DEFAULT_BITNUM bit_8

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/16
+* Version            : V1.0.2
+* Date               : 2026/03/30
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -141,8 +141,7 @@ void Hardware(void)
     ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 1, ADC_SampleTime_CyclesMode5);
     DMA_Rx_Init(DMA1_Channel1, (int32_t)& ADC1->RDATAR, (uint32_t)TxBuf, 1024);
     DMA_MuxChannelConfig(DMA_MuxChannel1, 0x78); 
-    DMA_Cmd(DMA1_Channel1, ENABLE); 
-    DMA_Cmd(DMA1_Channel1, ENABLE); 
+    DMA_Cmd(DMA1_Channel1, ENABLE);  
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
     while(DMA_GetFlagStatus(DMA1,DMA1_FLAG_TC1) == RESET) /* Wait until USART2 TX DMA1 Transfer Complete */
     {

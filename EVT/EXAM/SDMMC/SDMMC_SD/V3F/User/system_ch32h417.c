@@ -31,7 +31,7 @@ uint32_t HCLKClock;
 #ifdef SYSCLK_600M_CoreCLK_V5F_300M_V3F_150M_HSE
 uint32_t SystemClock = SYSCLK_600M_CoreCLK_V5F_300M_V3F_150M_HSE;         /* System Clock Frequency */
 uint32_t SystemCoreClock = 150000000;
-#elif defined SYSCLK_480_CoreCLK_V5F_240M_V3F_120M_HSE
+#elif defined SYSCLK_480M_CoreCLK_V5F_240M_V3F_120M_HSE
 uint32_t SystemClock = SYSCLK_480M_CoreCLK_V5F_240M_V3F_120M_HSE;        /* System Clock Frequency */
 uint32_t SystemCoreClock = 120000000;
 #elif defined SYSCLK_400M_CoreCLK_V5F_400M_V3F_100M_HSI

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_it.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/10/23
+* Version            : V1.0.2
+* Date               : 2026/01/21
 * Description        : USBSS functions Interrupt Service Routines.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -64,7 +64,7 @@ void USBSS_LINK_IRQHandler( void )
  */
 uint8_t USBSS_Endp_Clear_Frature( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
@@ -91,7 +91,7 @@ uint8_t USBSS_Endp_Clear_Frature( uint8_t dir_endp )
  */
 uint8_t USBSS_Endp_Set_Frature( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
@@ -117,11 +117,11 @@ uint8_t USBSS_Endp_Set_Frature( uint8_t dir_endp )
  */
 uint8_t USBSS_Get_Endp_Status( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
-    if(( dir_endp & DEF_UEP_NUM ) == DEF_UEP0 )
+    if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP0 )
     {
         return 0x00;
     }

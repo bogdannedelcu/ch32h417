@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/07/28
+ * Version            : V1.0.1
+ * Date               : 2026/04/10
  * Description        : Main program body for V5F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -23,6 +23,7 @@
 
 #include "debug.h"
 #include "hardware.h"
+#include "ch32h417_usbss_device.h"
 
 /*********************************************************************
  * @fn      main
@@ -37,6 +38,7 @@ int main(void)
 	Delay_Init();
 	USART_Printf_Init(921600);
 	printf("V5F SystemCoreClk:%d\r\n", SystemCoreClock);
+	Chip = (( DBGMCU_GetCHIPID() >> 4 ) & 0x0F);
 
 #if (Run_Core == Run_Core_V3FandV5F)
 	HSEM_FastTake(HSEM_ID0);

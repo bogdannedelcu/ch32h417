@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : PD_process.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/12/05
+* Version            : V1.0.
+* Date               : 2026/04/08
 * Description        : This file provides all the PD firmware functions.
 *********************************************************************************
 * Copyright (c) 2023 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -728,11 +728,11 @@ void PD_Main_Proc( )
         switch( pd_header )
         {
             case DEF_TYPE_SRC_CAP:
-                Delay_Ms( 5 );
+           
                 PD_Ctl.Flag.Bit.Stop_Det_Chk = 0;                         /* Enable PD disconnection detection */
 
                 PD_Save_Adapter_SrcCap( );
-
+                PDO_Request( PDO_INDEX_1 );
                 /* Analysis of the voltage and current of each PDO group */
                 for (var = 1; var <= PDO_Len; ++var)
                 {
@@ -742,7 +742,7 @@ void PD_Main_Proc( )
                 printf("\r\n");
                 /* Different PDO's for different voltages and currents */
                 /* Default application for the first group of PDO, 5V */
-                PDO_Request( PDO_INDEX_1 );
+
                 break;
 
             case DEF_TYPE_ACCEPT:

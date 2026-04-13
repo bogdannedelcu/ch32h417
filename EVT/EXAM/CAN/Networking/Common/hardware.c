@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : hardware.c
  * Author             : WCH
- * Version            : V1.0.2
- * Date               : 2025/10/20
+ * Version            : V1.0.3
+ * Date               : 2026/04/08
  * Description        : This document demonstrates how to implement inter - chip connection using CAN.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -460,7 +460,7 @@ void Hardware(void)
     CAN_InitSturcture.CAN_BS1 = CAN_BS1_6tq;
     CAN_InitSturcture.CAN_BS2 = CAN_BS2_5tq;
     CAN_InitSturcture.CAN_Prescaler = 16;
-    CAN_Mode_Init(CAN1, CANRXPinTable, CANTXPinTable, &CAN_InitSturcture);
+    CAN_Mode_Init(CAN1, CANRXPinTable+1, CANTXPinTable+1, &CAN_InitSturcture);
 #ifdef USE_INTERRUPT_TO_REC
     CAN_ITConfig(CAN1, CAN_IT_FMP0, ENABLE);
     NVIC_EnableIRQ(CAN1_RX0_IRQn);

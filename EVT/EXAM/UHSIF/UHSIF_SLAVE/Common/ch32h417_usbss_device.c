@@ -15,6 +15,7 @@
 
 USBSS_Dev_Info_t USBSS_Dev_Info;
 volatile uint8_t  USB_Enum_Status = UNINIT;
+volatile uint32_t Chip = 0;
 
 /*********************************************************************
  * @fn      USBSS_RCC_Init
@@ -56,7 +57,7 @@ void USBSS_Device_Init( FunctionalState sta )
     if( sta )
     {
         USBSS_RCC_Init( ENABLE );
-        USBSS_CFG_MOD( );
+
         USBSSD->LINK_CFG = LINK_RX_EQ_EN | LINK_TX_DEEMPH_MASK | LINK_PHY_RESET;   
         USBSSD->LINK_CTRL = LINK_P2_MODE | LINK_GO_DISABLED;                        
         USBSSD->LINK_CFG = LINK_RX_EQ_EN | LINK_TX_DEEMPH_MASK | LINK_LTSSM_MODE | LINK_TOUT_MODE;
@@ -67,6 +68,12 @@ void USBSS_Device_Init( FunctionalState sta )
         USBSSD->LINK_CFG |= LINK_RX_TERM_EN;                                     
         USBSSD->LINK_INT_CTRL =  LINK_IE_TX_LMP | LINK_IE_RX_LMP | LINK_IE_RX_LMP_TOUT | LINK_IE_STATE_CHG
                                     | LINK_IE_WARM_RST | LINK_IE_TERM_PRES;
+
+        if( Chip >= 3 )
+        {
+            USBSSD->LINK_INT_CTRL |= LINK_IE_RX_SET_FC;
+        }
+                
         USBSSD->LINK_CTRL = LINK_P2_MODE;
         USBSSD->LINK_U1_WKUP_TMR = 120;
         USBSSD->LINK_U1_WKUP_FILTER = 50;
@@ -75,6 +82,8 @@ void USBSS_Device_Init( FunctionalState sta )
         USBSSD->USB_CONTROL |= USBSS_FORCE_RST;
         USBSSD->USB_STATUS = USBSS_UIF_TRANSFER;
         USBSSD->USB_CONTROL = USBSS_UIE_TRANSFER | USBSS_UDIE_SETUP | USBSS_UDIE_STATUS | USBSS_DMA_EN | USBSS_SETUP_FLOW;
+
+        USBSS_CFG_MOD( );
         USBSS_Device_Endp_Init ( );
         NVIC_EnableIRQ( USBSS_IRQn );
         NVIC_EnableIRQ( USBSS_LINK_IRQn );
@@ -273,6 +282,24 @@ void USBSS_LINK_Handle( USBSSH_TypeDef *USBSSHx )
     link_state = USBSSHx->LINK_STATUS & LINK_STATE_MASK;
     link_int = USBSSHx->LINK_INT_FLAG;
 
+    if( Chip >= 3 )
+    {
+        if( link_int & LINK_IF_RX_SET_FC )              
+        {   
+            USBSSHx->LINK_INT_FLAG = LINK_IF_RX_SET_FC;
+            if( USBSSHx->LINK_LMP_PORT_CAP & FORCE_PM )
+            {
+                USBSSHx->LINK_CFG |= LINK_U1_ALLOW;
+                USBSSHx->LINK_CFG |= LINK_U2_ALLOW;
+            }
+            else 
+            {
+                USBSSHx->LINK_CFG &= ~LINK_U1_ALLOW;
+                USBSSHx->LINK_CFG &= ~LINK_U2_ALLOW;
+            }
+        }
+    }
+
     if( link_int & LINK_IF_STATE_CHG )
     {
         USBSSHx->LINK_INT_FLAG = LINK_IF_STATE_CHG;
@@ -420,19 +447,22 @@ void USBSS_LINK_Handle( USBSSH_TypeDef *USBSSHx )
             }
             else if( ( link_lpm_r_data0 & LMP_SUBTYPE_MASK ) == LMP_SET_LINK_FUNC )
             {
-                if( USBSSHx->LINK_LMP_RX_DATA0 & ( 0x02 << 9 ))
+                if( Chip < 3 )
                 {
-                    USBSSD->LINK_CFG |= LINK_U1_ALLOW;
-                    USBSSD->LINK_CFG |= LINK_U2_ALLOW;
-                    USBSS_Dev_Info.u1_enable = ENABLE;
-                    USBSS_Dev_Info.u2_enable = ENABLE;
-                }
-                else
-                {
-                    USBSSD->LINK_CFG &= ~LINK_U1_ALLOW;
-                    USBSSD->LINK_CFG &= ~LINK_U2_ALLOW;
-                    USBSS_Dev_Info.u1_enable = DISABLE;
-                    USBSS_Dev_Info.u2_enable = DISABLE;
+                    if( USBSSHx->LINK_LMP_RX_DATA0 & ( 0x02 << 9 ))
+                    {
+                        USBSSD->LINK_CFG |= LINK_U1_ALLOW;
+                        USBSSD->LINK_CFG |= LINK_U2_ALLOW;
+                        USBSS_Dev_Info.u1_enable = ENABLE;
+                        USBSS_Dev_Info.u2_enable = ENABLE;
+                    }
+                    else
+                    {
+                        USBSSD->LINK_CFG &= ~LINK_U1_ALLOW;
+                        USBSSD->LINK_CFG &= ~LINK_U2_ALLOW;
+                        USBSS_Dev_Info.u1_enable = DISABLE;
+                        USBSS_Dev_Info.u2_enable = DISABLE;
+                    }
                 }
             }
 

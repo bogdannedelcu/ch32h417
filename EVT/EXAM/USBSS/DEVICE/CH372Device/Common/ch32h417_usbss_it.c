@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_it.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/10/23
+* Version            : V1.0.3
+* Date               : 2026/04/10
 * Description        : USBSS functions Interrupt Service Routines.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -63,7 +63,7 @@ void USBSS_LINK_IRQHandler( void )
  */
 uint8_t USBSS_Endp_Clear_Frature( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
@@ -90,7 +90,7 @@ uint8_t USBSS_Endp_Clear_Frature( uint8_t dir_endp )
  */
 uint8_t USBSS_Endp_Set_Frature( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
@@ -116,11 +116,11 @@ uint8_t USBSS_Endp_Set_Frature( uint8_t dir_endp )
  */
 uint8_t USBSS_Get_Endp_Status( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
     }
-    if(( dir_endp & DEF_UEP_NUM ) == DEF_UEP0 )
+    if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP0 )
     {
         return 0x00;
     }
@@ -327,7 +327,7 @@ void USBSS_IRQHandler( void )
                         else if((uint8_t)( USBSS_SetupReqValue & 0xFF ) == USB_U1_ENABLE )
                         {
 
-#ifdef DEF_UP_U1_EN             /* disable U1 */
+#ifdef DEF_UP_U1_EN         /* disable U1 */
                             USBSSD->LINK_CFG &= ~LINK_U1_ALLOW;
                             USBSS_Dev_Info.u1_enable = DISABLE;
 #endif
@@ -336,7 +336,7 @@ void USBSS_IRQHandler( void )
                         }
                         else if((uint8_t)( USBSS_SetupReqValue & 0xFF ) == USB_U2_ENABLE )
                         {
-#ifdef DEF_UP_U2_EN             /* disable U2 */
+#ifdef DEF_UP_U2_EN         /* disable U2 */
                             USBSSD->LINK_CFG &= ~LINK_U2_ALLOW;
                             USBSS_Dev_Info.u2_enable = DISABLE;
 #endif
@@ -470,9 +470,9 @@ void USBSS_IRQHandler( void )
             if( USBSS_SetupReqType & DEF_UEP_IN )
             {
                 /* tx */
-                if(USBSS_SetupReqLen == 0)
+                if( USBSS_SetupReqLen == 0 )
                 {
-                    USBSSD->UEP0_RX_CTRL = USBSS_EP0_RX_ERDY | USBSS_EP0_RX_ACK ;
+                    USBSSD->UEP0_RX_CTRL = USBSS_EP0_RX_ERDY | USBSS_EP0_RX_ACK;
                 }
                 else 
                 {
@@ -531,7 +531,7 @@ void USBSS_IRQHandler( void )
             {
                 /* end-point 0 data in interrupt */
                 case DEF_UEP0:
-                    if(USBSS_SetupReqLen == 0)
+                    if( USBSS_SetupReqLen == 0 )
                     {
                         USBSSD->UEP0_TX_CTRL = USBSS_EP0_TX_DPH;                            // Zero Length
                         USBSSD->UEP0_RX_CTRL = USBSS_EP0_RX_ERDY | USBSS_EP0_RX_ACK ;       // ready status step

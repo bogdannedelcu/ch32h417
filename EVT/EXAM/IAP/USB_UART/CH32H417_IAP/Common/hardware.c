@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/10/24
+* Version            : V1.0.2
+* Date               : 2026/04/03
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -15,7 +15,8 @@
  * and you can choose the command method or the IO method to jump to the APP .
  * Key  parameters: CalAddr - address in flash (same in APP), note that this address needs to be unused.
  *                  CheckNum - The value of 'CalAddr' that needs to be modified.
- * Tips :the routine need IAP software version 1.50 or later.
+ * Tips :the routine need IAP software version 1.60 or later.
+ *       DEF_USB_APP_MODE - USB Vendor or HID mode
  */
 
 #include "hardware.h"
@@ -23,6 +24,7 @@
 #include "ch32h417_usbhs_device.h"
 #include "ch32h417_gpio.h"
 #include "iap.h"
+#include "usb_inf.h"
 extern vu8 End_Flag;
 
 #define UPGRADE_MODE_COMMAND   0
@@ -38,10 +40,7 @@ extern vu8 End_Flag;
  */
 void IAP_2_APP(void)
 {
-    USBHS_Device_Init( DISABLE );
-    NVIC_DisableIRQ( USBHS_IRQn );
-    USBFSD->BASE_CTRL=0x06;
-    USBFSD->INT_EN=0x00;
+    USB_Init(DISABLE);
     Delay_Ms(50);
     printf("jump APP\r\n");
     Delay_Ms(50);
@@ -51,8 +50,6 @@ void IAP_2_APP(void)
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, DISABLE);
     RCC_HB2PeriphClockCmd( RCC_HB2Periph_GPIOB,DISABLE);
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_USART1,DISABLE);
-    RCC_HBPeriphClockCmd(RCC_HBPeriph_USBHS, DISABLE);
-    RCC_HBPeriphClockCmd(RCC_HBPeriph_OTG_FS, DISABLE);
     Delay_Ms(10);
 
     RCC_DeInit();
@@ -87,11 +84,8 @@ void Hardware(void)
 #endif
 
     USART1_CFG(460800);
-    // /* USB20 device init */
-    USBHS_RCC_Init(ENABLE );
-    USBHS_Device_Init( ENABLE );
+    USB_Init(ENABLE);
 
-    USBFS_Init( );
 	while(1)
 	{
         if( USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET){
@@ -101,10 +95,10 @@ void Hardware(void)
 
 #if UPGRADE_MODE == UPGRADE_MODE_COMMAND
         if (End_Flag)
-         {
+        {
             IAP_2_APP();
             while(1);
-         }
+        }
 #endif
 	}
 }

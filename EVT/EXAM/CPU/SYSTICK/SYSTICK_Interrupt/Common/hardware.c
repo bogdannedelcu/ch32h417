@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/01/28
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -29,7 +29,7 @@ void SysTick1_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
  *
  * @return  none
  */
-void SYSTICK_Init_Config(u_int64_t ticks)
+void SYSTICK_Init_Config(uint64_t ticks)
 {
 #ifdef Core_V3F
     SysTick0->ISR &= ~(1 << 0);//clear State flag

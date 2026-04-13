@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_fmc.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/04/03
 * Description        : This file contains all the functions prototypes for the FMC
 *                      firmware library.
 *********************************************************************************
@@ -263,7 +263,7 @@ typedef enum
 
 /* FMC_SDRAM_Bank */
 #define FMC_Bank5_SDRAM                                ((uint32_t)0x00000000)
-#define FMC_Bank6_SDRAM                                ((uint32_t)0x00000002)
+#define FMC_Bank6_SDRAM                                ((uint32_t)0x00000001)
 
 /* FMC_Data_Address_Bus_Multiplexing */
 #define FMC_DataAddressMux_Disable                     ((uint32_t)0x00000000)

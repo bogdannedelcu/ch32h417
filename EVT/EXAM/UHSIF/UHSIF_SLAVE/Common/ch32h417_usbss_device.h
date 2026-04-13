@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_usbss_device.h"
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/05/23
+* Version            : V1.0.1
+* Date               : 2026/04/08
 * Description        : header file of ch32h417_usbss_device.c
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -27,6 +27,7 @@ extern "C" {
 #define DEF_UEP_BUSY                  0x01
 #define DEF_UEP_FREE                  0x00
 #define DEF_UEP_NUM                   16
+#define DEF_UEP_MASK                  0x7F
 #define DEF_UEP0                      0x00
 #define DEF_UEP1                      0x01
 #define DEF_UEP2                      0x02
@@ -143,6 +144,8 @@ extern __attribute__ ((aligned(32))) uint8_t USBSS_EP1_Rx_Buf[ DEF_USB_EP1_SS_SI
 
 extern USBSS_Dev_Info_t USBSS_Dev_Info;
 extern volatile uint8_t  USB_Enum_Status;
+extern volatile uint32_t Chip;
+
 /* SetUp Request Values */
 extern const uint8_t *pUSBSS_Descr;
 

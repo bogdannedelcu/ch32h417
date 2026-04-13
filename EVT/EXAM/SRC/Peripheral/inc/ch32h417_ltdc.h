@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_ltdc.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/11/13
+* Version            : V1.0.2
+* Date               : 2026/04/02
 * Description        : This file contains all the functions prototypes for the
 *                      LTDC firmware library.
 *********************************************************************************
@@ -125,14 +125,6 @@ typedef struct
   uint32_t LTDC_POSY;  /*  Current Y Position */
 } LTDC_PosTypeDef;
 
-/* LTDC RGB structure definition   */
-typedef struct
-{
-  uint32_t LTDC_BlueWidth;   /* Blue width */
-  uint32_t LTDC_GreenWidth;  /* Green width */
-  uint32_t LTDC_RedWidth;    /* Red width */
-} LTDC_RGBTypeDef;
-
 /* LTDC Color Keying structure definition   */
 typedef struct
 {
@@ -228,14 +220,12 @@ void LTDC_DeInit(void);
 void LTDC_Init(LTDC_InitTypeDef* LTDC_InitStruct);
 void LTDC_StructInit(LTDC_InitTypeDef* LTDC_InitStruct);
 void LTDC_Cmd(FunctionalState NewState);
-LTDC_RGBTypeDef LTDC_GetRGBWidth(void);
-void LTDC_RGBStructInit(LTDC_RGBTypeDef* LTDC_RGB_InitStruct);
 void LTDC_LIPConfig(uint32_t LTDC_LIPositionConfig);
 void LTDC_ReloadConfig(uint32_t LTDC_Reload);
 void LTDC_LayerInit(LTDC_Layer_TypeDef* LTDC_Layerx, LTDC_Layer_InitTypeDef* LTDC_Layer_InitStruct);
 void LTDC_LayerStructInit(LTDC_Layer_InitTypeDef* LTDC_Layer_InitStruct);
 void LTDC_LayerCmd(LTDC_Layer_TypeDef* LTDC_Layerx, FunctionalState NewState);
-LTDC_PosTypeDef LTDC_GetPosStatus(void);
+LTDC_PosTypeDef *LTDC_GetPosStatus(LTDC_PosTypeDef *LTDC_Pos_Struct);
 void LTDC_PosStructInit(LTDC_PosTypeDef* LTDC_Pos_InitStruct);
 FlagStatus LTDC_GetCDStatus(uint32_t LTDC_CD);
 void LTDC_ColorKeyingConfig(LTDC_Layer_TypeDef* LTDC_Layerx, LTDC_ColorKeying_InitTypeDef* LTDC_colorkeying_InitStruct, FunctionalState NewState);

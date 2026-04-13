@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_flash.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/18
+* Version            : V1.0.2
+* Date               : 2026/04/08
 * Description        : This file contains all the functions prototypes for the FLASH  
 *                      firmware library.
 *********************************************************************************
@@ -136,6 +136,7 @@ void FLASH_ProgramPage_Fast(uint32_t Page_Address, uint32_t* pbuf);
 void FLASH_Enhance_Mode(FunctionalState NewState);
 void FLASH_Access_Clock_Cfg(uint32_t FLASH_Access_CLK);
 void FLASH_LP_Cmd(FunctionalState NewState);
+void FLASH_Continue_Mode(FunctionalState NewState);
 void SystemReset_StartMode(uint32_t Mode);
 FLASH_Status FLASH_ROM_ERASE(uint32_t StartAddr, uint32_t Length);
 FLASH_Status FLASH_ROM_WRITE(uint32_t StartAddr, uint32_t *pbuf, uint32_t Length);

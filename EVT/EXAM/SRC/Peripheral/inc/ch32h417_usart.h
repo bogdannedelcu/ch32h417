@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_usart.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/04/09
 * Description        : This file contains all the functions prototypes for the 
 *                      USART firmware library.
 *********************************************************************************
@@ -84,6 +84,8 @@ typedef struct
 #define USART_Parity_No                      ((uint16_t)0x0000)
 #define USART_Parity_Even                    ((uint16_t)0x0400)
 #define USART_Parity_Odd                     ((uint16_t)0x0600) 
+#define USART_Parity_Space                   ((uint16_t)0xF00C)
+#define USART_Parity_Mark                    ((uint16_t)0xF008) 
 
 /* USART_Mode */ 
 #define USART_Mode_Rx                        ((uint16_t)0x0004)

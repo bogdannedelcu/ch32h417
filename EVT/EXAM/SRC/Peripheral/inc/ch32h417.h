@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417.h
 * Author             : WCH
-* Version            : V1.0.4
-* Date               : 2025/12/08
+* Version            : V1.0.5
+* Date               : 2026/03/17
 * Description        : CH32H417_416_415 Device Peripheral Access Layer Header File.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -30,7 +30,7 @@
 
 /* CH32H417 Standard Peripheral Library version number */
 #define __CH32H417_STDPERIPH_VERSION_MAIN   (0x01) /* [15:8] main version */
-#define __CH32H417_STDPERIPH_VERSION_SUB    (0x04) /* [7:0] sub version */
+#define __CH32H417_STDPERIPH_VERSION_SUB    (0x05) /* [7:0] sub version */
 #define __CH32H417_STDPERIPH_VERSION        ( (__CH32H417_STDPERIPH_VERSION_MAIN << 8)\
                                              |(__CH32H417_STDPERIPH_VERSION_SUB << 0))
 
@@ -7457,25 +7457,10 @@ typedef struct
 #define  RCC_HPRE_DIV256                             ((uint32_t)0x000000E0)        /* SYSCLK divided by 256 */
 #define  RCC_HPRE_DIV512                             ((uint32_t)0x000000F0)        /* SYSCLK divided by 512 */
 
-#define  RCC_PPRE1                                   ((uint32_t)0x00000700)        /* PRE1[2:0] bits (APB1 prescaler) */
-#define  RCC_PPRE1_0                                 ((uint32_t)0x00000100)        /* Bit 0 */
-#define  RCC_PPRE1_1                                 ((uint32_t)0x00000200)        /* Bit 1 */
-#define  RCC_PPRE1_2                                 ((uint32_t)0x00000400)        /* Bit 2 */
-
-#define  RCC_PPRE1_DIV1                              ((uint32_t)0x00000000)        /* HCLK not divided */
-#define  RCC_PPRE1_DIV2                              ((uint32_t)0x00000500)        /* HCLK divided by 2 */
-#define  RCC_PPRE1_DIV4                              ((uint32_t)0x00000600)        /* HCLK divided by 4 */
-#define  RCC_PPRE1_DIV8                              ((uint32_t)0x00000700)        /* HCLK divided by 8 */
-
 #define  RCC_PPRE2                                   ((uint32_t)0x00003800)        /* PRE2[2:0] bits (APB2 prescaler) */
 #define  RCC_PPRE2_0                                 ((uint32_t)0x00000800)        /* Bit 0 */
 #define  RCC_PPRE2_1                                 ((uint32_t)0x00001000)        /* Bit 1 */
 #define  RCC_PPRE2_2                                 ((uint32_t)0x00002000)        /* Bit 2 */
-
-#define  RCC_PPRE2_TIM_DIV1                          ((uint32_t)0x00000000)        /* HCLK divided by 1 for TIM1,8,9,10*/
-#define  RCC_PPRE2_TIM_DIV2                          ((uint32_t)0x00002800)        /* HCLK divided by 2 for TIM1,8,9,10*/
-#define  RCC_PPRE2_TIM_DIV4                          ((uint32_t)0x00003000)        /* HCLK divided by 4 for TIM1,8,9,10*/
-#define  RCC_PPRE2_TIM_DIV8                          ((uint32_t)0x00003800)        /* HCLK divided by 8 for TIM1,8,9,10*/
 
 #define  RCC_PPRE2_ADCL_DIV1                         ((uint32_t)0x00000000)        /* HCLK divided by 1 for ADC*/
 #define  RCC_PPRE2_ADCL_DIV2                         ((uint32_t)0x00002000)        /* HCLK divided by 2 for ADC*/

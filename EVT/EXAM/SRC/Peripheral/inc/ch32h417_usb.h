@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_usb.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/16
+* Version            : V1.0.2
+* Date               : 2026/04/10
 * Description        : This file contains all the functions prototypes for the 
 *                      USB firmware library.
 *********************************************************************************
@@ -283,7 +283,7 @@
 #define LINK_IE_RX_DET              0x00100000
 #define LINK_IE_LOOPBACK            0x00080000
 #define LINK_IE_COMPLIANCE          0x00040000
-#define LINK_IE_HPBUF_FULL          0x00020000
+#define LINK_IE_RX_SET_FC           0x00020000
 #define LINK_IE_HPBUF_EMPTY         0x00010000
 #define LINK_IE_HOT_RST             0x00008000
 #define LINK_IE_WAKEUP              0x00004000
@@ -315,7 +315,7 @@
 #define LINK_IF_RX_DET              0x00100000
 #define LINK_IF_LOOPBACK            0x00080000
 #define LINK_IF_COMPLIANCE          0x00040000
-#define LINK_IF_HPBUF_FULL          0x00020000
+#define LINK_IF_RX_SET_FC           0x00020000
 #define LINK_IF_HPBUF_EMPTY         0x00010000
 #define LINK_IF_HOT_RST             0x00008000
 #define LINK_IF_WAKEUP              0x00004000
@@ -378,6 +378,7 @@
 /* LINK_PORT_CAP */
 #define LINK_LMP_RX_CAP_VLD         0x80000000
 #define LINK_LMP_TX_CAP_VLD         0x40000000
+#define FORCE_PM                    0x20000000 
 #define LINK_SPEED_MASK             0x3F000000
 #define LINK_PORT_CAP_MASK          0x00FFFFFF
 

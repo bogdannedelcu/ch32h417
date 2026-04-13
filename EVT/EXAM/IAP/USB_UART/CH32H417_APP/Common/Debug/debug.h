@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : debug.h
 * Author             : WCH
-* Version            : V1.0.2
-* Date               : 2025/12/05
+* Version            : V1.0.3
+* Date               : 2026/03/27
 * Description        : This file contains all the functions prototypes for UART
 *                      Printf , Delay functions.
 *********************************************************************************

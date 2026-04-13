@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32h417_i3c.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/12/04
+* Version            : V1.0.2
+* Date               : 2026/04/02
 * Description        : This file contains all the functions prototypes for the
 *                      I3C firmware library.
 *********************************************************************************
@@ -433,12 +433,12 @@ void I3C_ControllerHandleCCC(uint32_t CCCValue, uint32_t AddByteSize, uint32_t E
 void I3C_TargetHandleMessage(uint32_t MessageType, uint32_t IBISize);
 uint8_t I3C_GetMessageDirection(void);
 uint8_t I3C_GetTargetAbortPrivateRead(void);
-uint16_t I3C_GetGetXferDataCount(void);
+uint16_t I3C_GetXferDataCount(void);
 uint8_t I3C_GetMessageIdentifier(void);
-uint8_t I3C_GetGetIBITargetAddr(void);
+uint8_t I3C_GetIBITargetAddr(void);
 uint8_t I3C_GetReceiveCommandCode(void);
-uint8_t I3C_GetGetNbIBIAddData(void);
-uint8_t I3C_GetGetResetAction(void);
+uint8_t I3C_GetNbIBIAddData(void);
+uint8_t I3C_GetResetAction(void);
 FunctionalState I3C_GetAllowedPayloadUpdate(uint32_t DeviceIndex);
 uint8_t I3C_GetMIPIInstanceID(void);
 uint8_t I3C_GetIDTypeSelector(void);
@@ -449,6 +449,12 @@ void I3C_ClearITPendingBit(uint32_t I3C_IT);
 FlagStatus I3C_GetFlagStatus(uint32_t I3C_FLAG);
 FlagStatus I3C_GetErrorStatus(uint32_t I3C_Error);
 void I3C_ClearFlag(uint32_t I3C_FLAG);
+
+
+#define I3C_GetGetXferDataCount I3C_GetXferDataCount
+#define I3C_GetGetIBITargetAddr I3C_GetIBITargetAddr
+#define I3C_GetGetNbIBIAddData I3C_GetNbIBIAddData
+#define I3C_GetGetResetAction I3C_GetResetAction
 
 #ifdef __cplusplus
 }

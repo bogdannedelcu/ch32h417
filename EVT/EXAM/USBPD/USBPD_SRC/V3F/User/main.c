@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main_v3f.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2026/01/14
+ * Version            : V1.0.2
+ * Date               : 2026/04/08
  * Description        : Main program body for V3F.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -58,7 +58,9 @@ int main(void)
 	Hardware();
 
 #elif (Run_Core == Run_Core_V5F)
-
+	NVIC_WakeUp_V5F(Core_V5F_StartAddr);//wake up V5
+	PWR_EnterSTOPMode(PWR_Regulator_ON, PWR_STOPEntry_WFE);
+	printf("V3F wake up\r\n");
 #endif
 
 	

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2025/09/12
+* Version            : V1.0.2
+* Date               : 2026/04/08
 * Description        : This file provides all the hardware firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -12,7 +12,12 @@
 #include "hardware.h"
 
 /* Global define */
-#define Bank5_SDRAM_ADDR                         ((u32)(0XC0000000)) //SDRAM address
+
+#define bank1 0   
+#define bank2 1  
+#define bank1bank2 2    
+
+#define Bank5_SDRAM_ADDR                         ((u32)(0X60000000)) //SDRAM address
 #define FMC_SDRAM_CMD_TARGET_BANK2               FMC_SDCMR_CTB2
 #define FMC_SDRAM_CMD_TARGET_BANK1               FMC_SDCMR_CTB1
 #define FMC_SDRAM_CMD_TARGET_BANK1_2             ((uint32_t)0x00000018U)
@@ -40,16 +45,16 @@
 
 typedef struct
 {
-  uint32_t CommandMode;                  /*!< Defines the command issued to the SDRAM device.
+  uint32_t CommandMode;                  /*Defines the command issued to the SDRAM device.
                                               This parameter can be a value of @ref FMC_SDRAM_Command_Mode.          */
 
-  uint32_t CommandTarget;                /*!< Defines which device (1 or 2) the command will be issued to.
+  uint32_t CommandTarget;                /*Defines which device (1 or 2) the command will be issued to.
                                               This parameter can be a value of @ref FMC_SDRAM_Command_Target.        */
 
-  uint32_t AutoRefreshNumber;            /*!< Defines the number of consecutive auto refresh command issued
+  uint32_t AutoRefreshNumber;            /*Defines the number of consecutive auto refresh command issued
                                               in auto refresh mode.
                                               This parameter can be a value between Min_Data = 1 and Max_Data = 16   */
-  uint32_t ModeRegisterDefinition;       /*!< Defines the SDRAM Mode register content                                */
+  uint32_t ModeRegisterDefinition;       /*Defines the SDRAM Mode register content                                */
 }FMC_SDRAM_CommandTypeDef;
 
 /*********************************************************************
@@ -97,8 +102,9 @@ void SDRAM_Send_Cmd(u8 bankx,u8 cmd,u8 refresh,u16 regval)
 {
     u32 target_bank=0;
     
-    if(bankx==0) target_bank=FMC_SDRAM_CMD_TARGET_BANK1;       
-    else if(bankx==1) target_bank=FMC_SDRAM_CMD_TARGET_BANK2;   
+    if(bankx==bank1) target_bank=FMC_SDRAM_CMD_TARGET_BANK1;       
+    else if(bankx==bank2) target_bank=FMC_SDRAM_CMD_TARGET_BANK2;   
+    else if(bankx==bank1bank2)target_bank=FMC_SDRAM_CMD_TARGET_BANK1_2;
 
     FMC_SDRAM_SendCMDConfig(target_bank,cmd,refresh,regval);
 }
@@ -113,21 +119,304 @@ void SDRAM_Send_Cmd(u8 bankx,u8 cmd,u8 refresh,u16 regval)
 void SDRAM_Initialization_Sequence()
 {
 	u32 temp=0;
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_CLK_ENABLE,1,0);
-    // Delay_Us(500);         
-	SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_PALL,1,0);       
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_AUTOREFRESH_MODE,8,0);
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_CLK_ENABLE,1,0);     
+	SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_PALL,1,0);       
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_AUTOREFRESH_MODE,8,0);
 	temp=(u32)SDRAM_MODEREG_BURST_LENGTH_1          |	
               SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |	
               SDRAM_MODEREG_CAS_LATENCY_3          |	
               SDRAM_MODEREG_OPERATING_MODE_STANDARD |   
               SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;     
-    SDRAM_Send_Cmd(0,FMC_SDRAM_CMD_LOAD_MODE,1,temp);   
+    SDRAM_Send_Cmd(bank1,FMC_SDRAM_CMD_LOAD_MODE,1,temp);   
     
 
 	FMC_SDRAM_SetRefreshCnt(677);	
 }	
+void GPIO_Config(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
 
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOF, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOC, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOB, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOD, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOE, ENABLE);
+
+    // CLK PF2(AF12)
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource2, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+    // CKE[0] PF3(AF4)
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource3, GPIO_AF4);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+    // RAS_N PF11(AF12)
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource11, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+    // CAS_N PF12(AF12)
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource12, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+    // WE_N PA7(AF12)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // DQM[1] PE3(AF1)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource3, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // BA[0] PB1(AF7)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource1, GPIO_AF7);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // BA[1] PA13(AF3)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource13, GPIO_AF3);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_13;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // ADDR[0] PF5(AF12)
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource5, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+    // ADDR[1] PB3(AF12)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // ADDR[2] PB4(AF12)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource4, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_4;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // ADDR[3] PE14(AF15)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource14, GPIO_AF15);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_14;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource0, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // ADDR[4] PE1(AF0)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource1, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // ADDR[5] PB6(AF11)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF11);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // ADDR[6] PB11(AF0)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // ADDR[7] PA11(AF10)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF10);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // ADDR[8] PA12(AF10)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF10);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // ADDR[9] PB14(AF0)
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_14;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // ADDR[10] PD10(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // ADDR[11] PD11(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource11, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // ADDR[12] PD12(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[0] PD13(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_13;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[1] PD14(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_14;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[2] PD15(AF0)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_15;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[3] PD1(AF12)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource1, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[4] PE7(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource7, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[5] PE8(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource8, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[6] PE9(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource9, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[7] PE10(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource10, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[8] PE11(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[9] PE12(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource12, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[10] PE13(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource13, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_13;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[11] PA10(AF0)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF0);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // D[12] PE15(AF12)
+    GPIO_PinAFConfig(GPIOE, GPIO_PinSource15, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_15;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // D[13] PD8(AF12)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // D[14] PD9(AF12)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF12);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // A[14] PA14(AF1)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource14, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_14;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // D[15] PD5(AF1)
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource5, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+} 
 /*********************************************************************
  * @fn      FMC_SDRAM_Init
  *
@@ -137,164 +426,38 @@ void SDRAM_Initialization_Sequence()
  */
 void SDRAM_Init(void)
 {
-    GPIO_InitTypeDef  GPIO_InitStructure={0};
-    FMC_SDRAM_InitTypeDef  SDRAMInitStructure={0};
-    FMC_SDRAM_TimingTypeDef SDRAM_Timing={0};
-    
+    FMC_SDRAM_InitTypeDef   SDRAMInitStructure = {0};
+    FMC_SDRAM_TimingTypeDef SDRAM_Timing       = {0};
+    RCC_HBPeriphClockCmd(RCC_HBPeriph_FMC, ENABLE);
+    GPIO_Config();
 
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA |RCC_HB2Periph_GPIOB | RCC_HB2Periph_GPIOC |RCC_HB2Periph_GPIOD | RCC_HB2Periph_GPIOE| RCC_HB2Periph_GPIOF |RCC_HB2Periph_AFIO,ENABLE);
-    RCC_HBPeriphClockCmd(RCC_HBPeriph_FMC,ENABLE);
+    SDRAMInitStructure.FMC_Bank               = FMC_Bank5_SDRAM;
+    SDRAMInitStructure.FMC_ColumnBitsNumber   = FMC_ColumnBitsNumber_9;
+    SDRAMInitStructure.FMC_RowBitsNumber      = FMC_ROWBitsNumber_13;
+    SDRAMInitStructure.FMC_MemoryDataWidth    = FMC_MemoryDataWidth_16;
+    SDRAMInitStructure.FMC_InternalBankNumber = FMC_InternalBankNumber_4;
+    SDRAMInitStructure.FMC_CASLatency         = FMC_CASLatency_3CLk;
+    SDRAMInitStructure.FMC_WriteProtection    = FMC_WriteProtection_Disable;
+    SDRAMInitStructure.FMC_SDClockPeriod      = 1;
+    SDRAMInitStructure.FMC_ReadBurst          = FMC_ReadBurst_Disable;
+    SDRAMInitStructure.FMC_ReadPipeDelay      = FMC_ReadPipeDelay_none;
+    SDRAMInitStructure.FMC_PHASE_SEL          = 0xa;
 
-    /*
-    PA10-A6 
-    PA11-A7 
-    PA12-A8 
-    PA13-A9
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF10);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF10);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF10);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource13, GPIO_AF10);
+    SDRAM_Timing.FMC_LoadToActiveDelay    = 2;
+    SDRAM_Timing.FMC_ExitSelfRefreshDelay = 8;
+    SDRAM_Timing.FMC_SelfRefreshTime      = 5;
+    SDRAM_Timing.FMC_RowCycleDelay        = 6;
+    SDRAM_Timing.FMC_WriteRecoveryTime    = 2;
+    SDRAM_Timing.FMC_RPDelay              = 2;
+    SDRAM_Timing.FMC_RCDDelay             = 2;
+    SDRAMInitStructure.FMC_SDRAM_Timing   = &SDRAM_Timing;
 
-    /*
-    PB3-A1 
-    PB4-A2 
-    PB8-A3 
-    PB9-A4 
-    PB6-A5  
-    PB10-A10 
-    PB11-A11 
-    PB12-A12 
-    PB14-BA0 
-    PB15-BA1 
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_6|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_14|GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource4, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource9, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF11);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource12, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF12);
+    FMC_SDRAM_Init(&SDRAMInitStructure);
+    FMC_Bank5_6->MISC |= (1 << 15);
+    FMC_Bank5_6->MISC |= (1 << 16);  //Enable SDRAM1
+    SDRAM_Initialization_Sequence();
 
-    /*
-    PC5-SDCKE0
-    PC0-SDNWE
-    PC2-SDNE0
-    PC12-NBL0
-    PC11-NBL1
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_0|GPIO_Pin_2;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource5, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource0, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource2, GPIO_AF12);
-
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_11;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF0);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF0);
-
-    /*
-    PD14-D0
-    PD15-D1
-    PD0-D2
-    PD1-D3
-    PD8-D13
-    PD9-D14
-    PD10-D15
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_14|GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource0, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource1, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF12);
-
-    /*
-    PE7-D4
-    PE8-D5
-    PE9-D6
-    PE10-D7
-    PE11-D8
-    PE12-D9
-    PE13-D10
-    PE14-D11
-    PE15-D12
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource10, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource12, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource13, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource14, GPIO_AF12);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15, GPIO_AF12);
-
-    /*
-    PF5-A0
-    PF2-SDCLK
-    PF11-SDNRAS
-    PF12-SDNCAS
-    */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_2|GPIO_Pin_11|GPIO_Pin_12;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
-    GPIO_Init(GPIOF, &GPIO_InitStructure);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource5, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOF, GPIO_PinSource2, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOF, GPIO_PinSource11, GPIO_AF12);
-    GPIO_PinAFConfig(GPIOF, GPIO_PinSource12, GPIO_AF12);
-
-
-    SDRAMInitStructure.FMC_Bank=FMC_Bank5_SDRAM;                          	 
-    SDRAMInitStructure.FMC_ColumnBitsNumber=FMC_ColumnBitsNumber_9;     
-    SDRAMInitStructure.FMC_RowBitsNumber=FMC_ROWBitsNumber_13;          
-    SDRAMInitStructure.FMC_MemoryDataWidth=FMC_MemoryDataWidth_16;       
-    SDRAMInitStructure.FMC_InternalBankNumber=FMC_InternalBankNumber_4;  
-    SDRAMInitStructure.FMC_CASLatency=FMC_CASLatency_3CLk;               
-    SDRAMInitStructure.FMC_WriteProtection=FMC_WriteProtection_Disable;
-    SDRAMInitStructure.FMC_SDClockPeriod=1;           
-    SDRAMInitStructure.FMC_ReadBurst=FMC_ReadBurst_Enable;                
-    SDRAMInitStructure.FMC_ReadPipeDelay=FMC_ReadPipeDelay_none;            
-    SDRAMInitStructure.FMC_PHASE_SEL=0xA;
-    
-    SDRAM_Timing.FMC_LoadToActiveDelay=2;                                  
-    SDRAM_Timing.FMC_ExitSelfRefreshDelay=8;                               
-    SDRAM_Timing.FMC_SelfRefreshTime=5;                                                                    
-    SDRAM_Timing.FMC_RowCycleDelay=6;                                       
-    SDRAM_Timing.FMC_WriteRecoveryTime=2;                                   
-    SDRAM_Timing.FMC_RPDelay=2;                                            
-    SDRAM_Timing.FMC_RCDDelay=2;                                           
-    SDRAMInitStructure.FMC_SDRAM_Timing = &SDRAM_Timing;
-
-    FMC_SDRAM_Init(&SDRAMInitStructure);  
-	FMC_Bank5_6->MISC|=(1<<16);    //Enable SDRAM1
-	SDRAM_Initialization_Sequence();
+    FMC_Bank1->BTCR[0] |= (1 << 24);
 }
 
 /*********************************************************************
@@ -308,8 +471,6 @@ void Hardware(void)
 {
 	u32 i=0;
     u32 p=0;
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE); 
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_PWR, ENABLE);
     PWR_VIO18ModeCfg(PWR_VIO18CFGMODE_SW);
     PWR_VIO18LevelCfg(PWR_VIO18Level_MODE3);

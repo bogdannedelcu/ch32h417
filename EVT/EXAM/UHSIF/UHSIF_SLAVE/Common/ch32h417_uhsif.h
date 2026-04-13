@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_uhsif.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/07/23
+* Version            : V1.0.1
+* Date               : 2026/04/08
 * Description        : This file contains the headers of the interrupt handlers.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -18,8 +18,6 @@ extern "C" {
 
 #include "ch32h417.h"
 #include "string.h"
-#include "debug.h"
-#include "ch32h417_usbss_device.h"
 
 
 /* UHSIF mode definition: 0 is for configuring slave FPGA mode, 1 is for configuring slave SOC mode,
@@ -118,6 +116,32 @@ extern "C" {
 #define DEF_LINE_DIR_ERR                  0xB3        /* The line direction is set incorrectly */
 #define DEF_BUFF_OVER_ERR                 0xC1        /* The number of buff exceeds the limit */
 #define DEF_DESC_OVER_ERR                 0xD1        /* The number of descriptors exceeds the limit */
+
+typedef struct
+{
+    volatile uint8_t Thread_Enable;
+    volatile uint8_t Thread_Dir;
+    volatile uint8_t Socket_Count;
+    volatile uint8_t UHSIF_First_Send;
+    volatile uint32_t Water_Mark_Value;
+}UHSIF_Stu_t;
+
+typedef struct
+{
+    UHSIF_Stu_t Stu[ 4 ];
+    volatile uint8_t Slave_Dout_Polarity;
+    volatile uint8_t Slave_Clk_Polarity;
+    volatile uint8_t Master_Dout_Polarity;
+    volatile uint8_t Master_Clk_Polarity;
+    volatile uint32_t Socket_Size;
+    volatile uint32_t TX_Buff_Size;
+    volatile uint32_t RX_Buff_Size;
+    volatile uint8_t Mode;
+    volatile uint8_t Width_Bit;
+    volatile uint8_t thread_max;
+}UHSIF_Para_t;
+
+extern UHSIF_Para_t UHSIF_Para;
 
 /*******************************************************************************
  * @fn      UHSIF_Get_Ver
