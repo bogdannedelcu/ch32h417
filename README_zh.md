@@ -20,7 +20,7 @@ OPA、电压比较器CMP等模拟资源，支持10M/100M以太网通讯，支持
 
 - 快速可编程中断控制器+硬件中断堆栈
 
-- V5F最高频率400MHz，V3F最高频率150MHz
+- V5F最高频率400MHz，V3F最高频率160MHz
 
 - 896KB易失数据存储区SRAM（包含128KB ITCM和256KB DTCM）
 - 960KB程序存储区CodeFlash

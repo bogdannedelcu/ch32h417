@@ -9,13 +9,14 @@ CH32H417 is an interconnected general-purpose microcontroller designed based on 
 
 ### System Block Diagram
 ![Alt](image/frame.png)
+
 ### Features
 
 - Dual Core Architecture: Barley RISC-V5F and RISC-V3F
 
 - Fast programmable interrupt controller + hardware interrupt stack
 
-- V5F up to 400MHz, V3F up to 150MHz
+- V5F up to 400MHz, V3F up to 160MHz
 
 - 896KB volatile data storage area SRAM (including 128KB ITCM and 256KB DTCM)
 - 960KB program storage area CodeFlash
