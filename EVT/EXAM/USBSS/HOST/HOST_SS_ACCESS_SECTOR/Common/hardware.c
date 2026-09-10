@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : hardware.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/03/01
+* Version            : V1.0.1
+* Date               : 2026/09/09
 * Description        : This file provides all the CRC firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -37,7 +37,8 @@ void TIM1_UP_IRQHandler(void)
     {
         printf("--------updata1\r\n");
         printf("gDeviceConnectstatus_time = %02x\n", gDeviceConnectstatus);
-        if( (gDeviceConnectstatus == USB_INT_CONNECT_U20) || (gDeviceConnectstatus == USB_INT_DISCONNECT)){
+        if( (gDeviceConnectstatus == USB_INT_CONNECT_U20) || (gDeviceConnectstatus == USB_INT_DISCONNECT))
+        {
             USBSS_Endp_Disable();       
             gDeviceConnectstatus = USB_INT_CONNECT;
             printf("--------updata2\r\n");
@@ -171,6 +172,22 @@ WAIT_DISCONNECT:
         printf("device_disconnect\n");
     }
 }
+/*********************************************************************
+ * @fn      Reset_Special_Processing
+ *
+ * @brief   USB special reset processing. Perform USB host controller
+ *          reset and re-initialization.
+ *
+ * @return  none
+ */
+void Reset_Special_Processing()
+{
+    USBHSH->PORT_TEST_CT |= ( 1 << 1 );
+    Delay_Ms(100);
+    USBHSH->PORT_TEST_CT &= ~( 1 << 1 ); 
+    USBHS_Host_Init( DISABLE );    
+    USBHS_Host_Init( ENABLE );
+}
 
 /*********************************************************************
  * @fn      Hardware
@@ -194,6 +211,7 @@ void Hardware(void)
     NVIC_EnableIRQ( USBSS_LINK_IRQn );
     USBSSH_Init( );
     USBHS_Host_Init( ENABLE );
+    Reset_Special_Processing();
 
     while(1)
     {
