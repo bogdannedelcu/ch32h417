@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_enum.c
 * Author             : WCH
-* Version            : V1.0
-* Date               : 2025/05/30
+* Version            : V1.0.1
+* Date               : 2026/09/09
 * Description        : This file provides the enumeration function of the host.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -18,7 +18,7 @@
 /* Constant, variable, structure definition */
 USB_SETUP_REQ *Ctl_Setup;	  													/* Control the transmission data packet */
 uint8_t   gDeviceClassType;														/* Current device type */
-volatile uint8_t   gDeviceConnectstatus;													/* USB connection status */
+volatile uint8_t   gDeviceConnectstatus;										/* USB connection status */
 uint8_t   gDeviceUsbType = 0;												    /* USB connection status：0x01--USB2.0&1.1  0x02--USB3.0 */
 uint8_t   gUdisk_flag = 0;
 #define	  DEVICE_ADDR				0x08										/* Device address of USB30 */
@@ -1142,8 +1142,8 @@ uint8_t U20HOST_SetAddress( uint8_t addr )
 	status = U20HostCtrlTransfer( Setup_buf ,NULL, NULL );
 	if( status == USB_INT_SUCCESS )
 	{
-	    USBHSH->DEV_ADDR = addr;                               // 设置USB主机当前操作的USB设备地址
-	    mDelaymS( 10 );                                        // 等待USB设备完成操作
+	    USBHSH->DEV_ADDR = addr;                               
+	    mDelaymS( 10 );                                        
 	}
 	mDelaymS( 5 );  										
 	return( status );

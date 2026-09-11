@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32h417_usbss_host.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/05/23
+* Version            : V1.0.1
+* Date               : 2026/09/09
 * Description        : This file contains the headers of the ch32h417_usbss handlers.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * SPDX-License-Identifier: Apache-2.0
@@ -62,7 +62,7 @@ typedef struct  __attribute__((packed))USBSS_Port_Info {
 #define USBSSH3_BASE      ((uint32_t)0x40038600)
 #define USBSSH4_BASE      ((uint32_t)0x40038800)
 
-#define USBSS_PHY_CFG_CR              (*((__IO uint32_t *)0x400341f8))          //这个地址才对
+#define USBSS_PHY_CFG_CR              (*((__IO uint32_t *)0x400341f8))
 #define USBSS_PHY_CFG_DAT             (*((__IO uint32_t *)0x400341fc))      
 
 #define USBSSH1_PHY_CFG_CR            (*((__IO uint32_t *)0x400383f8))
@@ -573,8 +573,8 @@ void USBSS_PLL_Init( FunctionalState sta );
 #define USB_RX_RES_MASK     (0x3<<30)
 #define RX_RES_ACK          (0x0<<30)
 #define RX_RES_FAILED       (0x1<<30)
-#define RX_RES_NRDY         (0x2<<30)
-#define RX_RES_STALL        (0x3<<30)
+#define RX_RES_NRDY         ( 0x2UL << 30UL )
+#define RX_RES_STALL        ( 0x3UL << 30UL )
 
 #define USB_SEQ_MASK        (0x1f<<21)
 
